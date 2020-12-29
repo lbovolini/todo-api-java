@@ -124,7 +124,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         ApiError apiError = new ApiError(new Date(), httpStatus.value(), httpStatus.getReasonPhrase(), message, path, errorList);
 
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(apiError);
+        return ResponseEntity.status(httpStatus).body(apiError);
     }
 
     private Error getError(DuplicateKeyException ex) {
