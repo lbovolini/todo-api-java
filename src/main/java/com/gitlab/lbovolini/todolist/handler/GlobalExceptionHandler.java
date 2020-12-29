@@ -3,17 +3,20 @@ package com.gitlab.lbovolini.todolist.handler;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -111,5 +114,37 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ApiError apiError = new ApiError(new Date(), httpStatus.value(), httpStatus.getReasonPhrase(), message, path, errorList);
 
         return ResponseEntity.badRequest().body(apiError);
+    }
+
+    @ExceptionHandler(DuplicateKeyException.class)
+    protected ResponseEntity<?> duplicateKey(DuplicateKeyException ex, HttpServletRequest request) {
+
+        String exceptionMessage = ex.getMostSpecificCause().getMessage();
+
+        int start = exceptionMessage.indexOf("{");
+        int end = exceptionMessage.indexOf("}");
+
+
+        String messageError = ((start != -1 && end != -1) &&  (start + 1) < exceptionMessage.length())
+                ? exceptionMessage.substring(start + 1, end)
+                : exceptionMessage;
+
+        String[] fieldValue = messageError.replaceFirst("\"", "")
+                .replaceFirst("\"", "")
+                .replaceAll(" ", "")
+                .split(":");
+
+        String field = fieldValue.length > 0 ? fieldValue[0] : "";
+        String value = fieldValue.length > 1 ? fieldValue[1] : "";
+
+        Error error = new Error(field, "Duplicate Key", value);
+
+        HttpStatus httpStatus = HttpStatus.CONFLICT;
+        String message = "Duplicate Key Exception";
+        String path = request.getRequestURI();
+
+        ApiError apiError = new ApiError(new Date(), httpStatus.value(), httpStatus.getReasonPhrase(), message, path, List.of(error));
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(apiError);
     }
 }
