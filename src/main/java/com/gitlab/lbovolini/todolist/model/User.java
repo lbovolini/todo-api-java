@@ -1,6 +1,7 @@
 package com.gitlab.lbovolini.todolist.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
@@ -12,6 +13,7 @@ public class User {
     @Id
     private String id;
     @NotBlank
+    @Indexed(name = "user_username_index_unique", unique = true)
     private String username;
     @NotBlank
     private String password;
