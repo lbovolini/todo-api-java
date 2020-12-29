@@ -65,10 +65,6 @@ public class TaskController implements CrudController<Task> {
     public ResponseEntity<List<Task>> findAll() {
         List<Task> taskList = taskService.findAll();
 
-        if (taskList.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-
         return ResponseEntity.ok(taskList);
     }
 

@@ -66,10 +66,6 @@ public class UserController implements CrudController<User> {
     public ResponseEntity<List<User>> findAll() {
         List<User> userList = userService.findAll();
 
-        if (userList.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-
         return ResponseEntity.ok(userList);
     }
 
