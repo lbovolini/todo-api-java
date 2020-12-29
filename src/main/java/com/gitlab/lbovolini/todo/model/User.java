@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.Objects;
 
 @Document
@@ -12,10 +12,10 @@ public class User {
 
     @Id
     private String id;
-    @NotBlank
+    @Pattern(regexp = "^(\\w){3,20}\\b")
     @Indexed(name = "user_username_index_unique", unique = true)
     private String username;
-    @NotBlank
+    @Pattern(regexp = "^(?=.*[\\d])(?=.*[a-z])[\\w!@#$%^&*()-=+,.;:]{8,}$")
     private String password;
 
     public String getId() {
