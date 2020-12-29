@@ -17,9 +17,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -117,13 +115,24 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(DuplicateKeyException.class)
-    protected ResponseEntity<?> duplicateKey(DuplicateKeyException ex, HttpServletRequest request) {
+    protected ResponseEntity<Object> handleDuplicateKey(DuplicateKeyException ex, HttpServletRequest request) {
+
+        List<Error> errorList = List.of(getError(ex));
+        HttpStatus httpStatus = HttpStatus.CONFLICT;
+        String message = "Duplicate Key Exception";
+        String path = request.getRequestURI();
+
+        ApiError apiError = new ApiError(new Date(), httpStatus.value(), httpStatus.getReasonPhrase(), message, path, errorList);
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(apiError);
+    }
+
+    private Error getError(DuplicateKeyException ex) {
 
         String exceptionMessage = ex.getMostSpecificCause().getMessage();
 
         int start = exceptionMessage.indexOf("{");
         int end = exceptionMessage.indexOf("}");
-
 
         String messageError = ((start != -1 && end != -1) &&  (start + 1) < exceptionMessage.length())
                 ? exceptionMessage.substring(start + 1, end)
@@ -136,15 +145,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         String field = fieldValue.length > 0 ? fieldValue[0] : "";
         String value = fieldValue.length > 1 ? fieldValue[1] : "";
+        String message = "Duplicate Key";
 
-        Error error = new Error(field, "Duplicate Key", value);
-
-        HttpStatus httpStatus = HttpStatus.CONFLICT;
-        String message = "Duplicate Key Exception";
-        String path = request.getRequestURI();
-
-        ApiError apiError = new ApiError(new Date(), httpStatus.value(), httpStatus.getReasonPhrase(), message, path, List.of(error));
-
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(apiError);
+        return new Error(field, message, value);
     }
 }
