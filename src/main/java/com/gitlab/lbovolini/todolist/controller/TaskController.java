@@ -10,6 +10,10 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Consome: MediaType.APPLICATION_JSON
+ * Produz: MediaType.APPLICATION_JSON
+ */
 @RestController
 @RequestMapping(path = "tasks",
         consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -23,6 +27,11 @@ public class TaskController implements CrudController<Task> {
         this.taskService = taskService;
     }
 
+    /**
+     * Remove a tarefa com o id informado.
+     * @param id
+     * @return Retorna ResponseEntity com HttpStatus 204, ou HttpStatus 404 se a tarefa com o id informado não for encontrada.
+     */
     @Override
     @DeleteMapping("{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
@@ -32,9 +41,9 @@ public class TaskController implements CrudController<Task> {
     }
 
     /**
-     * Realiza a busca da Task por id.
+     * Realiza a busca da tarefa pelo id informado.
      * @param id
-     * @return ResponseEntity com a Task e HttpStatus 200, ou HttpStatus 404 se a Task com o id informado não for encontrada.
+     * @return Retorna ResponseEntity com a tarefa e com HttpStatus 200, ou HttpStatus 404 se a tarefa com o id informado não for encontrada.
      */
     @Override
     @GetMapping("{id}")
@@ -47,6 +56,10 @@ public class TaskController implements CrudController<Task> {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    /**
+     * Realiza a busca de todas as tarefas.
+     * @return Retorna ResponseEntity com a lista de todas as tarefas e com HttpStatus 200.
+     */
     @Override
     @GetMapping
     public ResponseEntity<List<Task>> findAll() {
@@ -59,6 +72,11 @@ public class TaskController implements CrudController<Task> {
         return ResponseEntity.ok(taskList);
     }
 
+    /**
+     * Salva a tarefa na base de dados.
+     * @param task
+     * @return Retorna ResponseEntity com a tarefa salva e com HttpStatus 200, ou HttpStatus 409 se a tarefa informada já existe na base de dados.
+     */
     @Override
     @PostMapping
     public ResponseEntity<Task> save(@RequestBody Task task) {
@@ -67,6 +85,11 @@ public class TaskController implements CrudController<Task> {
         return ResponseEntity.ok(savedTask);
     }
 
+    /**
+     * Atualiza a tarefa na base de dados.
+     * @param task
+     * @return Retorna ResponseEntity com HttpStatus 200, ou HttpStatus 404 se a tarefa com o id informado não for encontrada.
+     */
     @Override
     @PutMapping
     public ResponseEntity update(@RequestBody Task task) {
