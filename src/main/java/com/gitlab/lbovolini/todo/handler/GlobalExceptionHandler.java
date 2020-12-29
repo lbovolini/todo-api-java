@@ -129,7 +129,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private Error getError(DuplicateKeyException ex) {
 
-        String exceptionMessage = ex.getMostSpecificCause().getMessage();
+        String exceptionMessage = Objects.requireNonNullElse(ex.getMostSpecificCause().getMessage(), "");
 
         int start = exceptionMessage.indexOf("{");
         int end = exceptionMessage.indexOf("}");
