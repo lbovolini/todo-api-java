@@ -3,6 +3,7 @@ package com.gitlab.lbovolini.todolist.controller;
 import com.gitlab.lbovolini.todolist.model.Task;
 import com.gitlab.lbovolini.todolist.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
@@ -10,7 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "tasks")
+@RequestMapping(path = "tasks",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
 public class TaskController implements CrudController<Task> {
 
     private final TaskService taskService;

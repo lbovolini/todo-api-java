@@ -3,6 +3,7 @@ package com.gitlab.lbovolini.todolist.controller;
 import com.gitlab.lbovolini.todolist.model.User;
 import com.gitlab.lbovolini.todolist.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,7 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("users")
+@RequestMapping(path = "users",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController implements CrudController<User> {
 
     private final UserService userService;
