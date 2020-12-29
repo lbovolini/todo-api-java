@@ -1,7 +1,7 @@
-package com.gitlab.lbovolini.todolist.controller;
+package com.gitlab.lbovolini.todo.controller;
 
-import com.gitlab.lbovolini.todolist.model.User;
-import com.gitlab.lbovolini.todolist.service.UserService;
+import com.gitlab.lbovolini.todo.model.User;
+import com.gitlab.lbovolini.todo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

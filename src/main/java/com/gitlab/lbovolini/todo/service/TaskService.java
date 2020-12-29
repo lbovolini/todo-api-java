@@ -1,7 +1,7 @@
-package com.gitlab.lbovolini.todolist.service;
+package com.gitlab.lbovolini.todo.service;
 
-import com.gitlab.lbovolini.todolist.model.Task;
-import com.gitlab.lbovolini.todolist.repository.TaskRepository;
+import com.gitlab.lbovolini.todo.model.Task;
+import com.gitlab.lbovolini.todo.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

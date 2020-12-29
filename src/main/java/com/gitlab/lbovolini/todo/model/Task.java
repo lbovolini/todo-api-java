@@ -1,4 +1,4 @@
-package com.gitlab.lbovolini.todolist.model;
+package com.gitlab.lbovolini.todo.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

@@ -1,7 +1,7 @@
-package com.gitlab.lbovolini.todolist.service;
+package com.gitlab.lbovolini.todo.service;
 
-import com.gitlab.lbovolini.todolist.model.User;
-import com.gitlab.lbovolini.todolist.repository.UserRepository;
+import com.gitlab.lbovolini.todo.model.User;
+import com.gitlab.lbovolini.todo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

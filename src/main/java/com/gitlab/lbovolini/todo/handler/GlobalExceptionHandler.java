@@ -1,4 +1,4 @@
-package com.gitlab.lbovolini.todolist.handler;
+package com.gitlab.lbovolini.todo.handler;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.core.Ordered;
