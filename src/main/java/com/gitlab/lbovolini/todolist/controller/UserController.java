@@ -30,7 +30,7 @@ public class UserController implements CrudController<User> {
     /**
      * Remove o usuário com o id informado.
      * @param id
-     * @return Retorna ResponseEntity com HttpStatus 204, ou HttpStatus 404 se o usuário com o id informado não for encontrado.
+     * @return Retorna ResponseEntity com HttpStatus 204.
      */
     @Override
     @DeleteMapping("{id}")

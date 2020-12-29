@@ -30,7 +30,7 @@ public class TaskController implements CrudController<Task> {
     /**
      * Remove a tarefa com o id informado.
      * @param id
-     * @return Retorna ResponseEntity com HttpStatus 204, ou HttpStatus 404 se a tarefa com o id informado não for encontrada.
+     * @return Retorna ResponseEntity com HttpStatus 204.
      */
     @Override
     @DeleteMapping("{id}")
