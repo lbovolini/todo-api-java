@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,7 +77,7 @@ public class UserController implements CrudController<User> {
      */
     @Override
     @PostMapping
-    public ResponseEntity<User> save(@RequestBody User user) {
+    public ResponseEntity<User> save(@Valid @RequestBody User user) {
         User savedUser = userService.save(user);
 
         return ResponseEntity.ok(savedUser);
@@ -89,7 +90,7 @@ public class UserController implements CrudController<User> {
      */
     @Override
     @PutMapping
-    public ResponseEntity<?> update(@RequestBody User user) {
+    public ResponseEntity<?> update(@Valid @RequestBody User user) {
         userService.update(user);
 
         return ResponseEntity.ok().build();

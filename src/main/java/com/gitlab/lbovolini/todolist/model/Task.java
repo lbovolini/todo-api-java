@@ -3,6 +3,7 @@ package com.gitlab.lbovolini.todolist.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotBlank;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
@@ -11,8 +12,11 @@ public class Task {
 
     @Id
     private String id;
+    @NotBlank
     private String name;
+    @NotBlank
     private String description;
+    @NotBlank
     private ZonedDateTime date;
     private String attachment;
 

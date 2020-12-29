@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,7 +76,7 @@ public class TaskController implements CrudController<Task> {
      */
     @Override
     @PostMapping
-    public ResponseEntity<Task> save(@RequestBody Task task) {
+    public ResponseEntity<Task> save(@Valid @RequestBody Task task) {
         Task savedTask = taskService.save(task);
 
         return ResponseEntity.ok(savedTask);
@@ -88,7 +89,7 @@ public class TaskController implements CrudController<Task> {
      */
     @Override
     @PutMapping
-    public ResponseEntity update(@RequestBody Task task) {
+    public ResponseEntity<?> update(@Valid @RequestBody Task task) {
         taskService.update(task);
 
         return ResponseEntity.ok().build();
