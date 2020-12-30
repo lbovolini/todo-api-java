@@ -6,6 +6,7 @@ import com.gitlab.lbovolini.todo.security.UserCredentials;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,6 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -45,7 +45,7 @@ public class AuthenticationService {
                 .filter(pass -> pass.equals(true))
                 .findFirst()
                 // !todo criar excecao InvalidCredentialsException e adicionar ao tratador de excecao global
-                .orElseThrow(() -> new RuntimeException("Invalid username and/or password."));
+                .orElseThrow(() -> new BadCredentialsException("Invalid username and/or password."));
     }
 
     public String generateToken(String subject) {
@@ -68,13 +68,13 @@ public class AuthenticationService {
         return userRepository.findByUsername(username);
     }
 
-
     public void logout(final User user) {
 
     }
 
     public Claims decode(String token) {
         String tokenString = extract(token);
+
         return Jwts.parserBuilder()
                 .setSigningKey(HASH_SHA512)
                 .build()

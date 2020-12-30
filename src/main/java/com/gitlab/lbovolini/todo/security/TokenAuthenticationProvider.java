@@ -30,7 +30,9 @@ public class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticati
     }
 
     @Override
-    protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken) throws AuthenticationException {
+    protected void additionalAuthenticationChecks(
+            UserDetails userDetails,
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken) throws AuthenticationException {
 
     }
 
@@ -45,12 +47,13 @@ public class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticati
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(claims.getSubject(), token,
                 authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
 
-
         return this.createSuccessAuthentication(username, authentication, retrieveUser(username, authenticationToken));
     }
 
     @Override
-    protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authenticationToken) throws AuthenticationException {
+    protected UserDetails retrieveUser(
+            String username,
+            UsernamePasswordAuthenticationToken authenticationToken) throws AuthenticationException {
         return Optional.ofNullable(username)
                 .map(String::valueOf)
                 .flatMap(authenticationService::findByUsername)
