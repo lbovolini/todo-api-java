@@ -11,7 +11,7 @@ public interface CrudService<T> {
 
     Optional<T> findById(String id);
 
-    T save(T task);
+    T save(T t);
 
-    void update(T task);
+    void update(T t);
 }
