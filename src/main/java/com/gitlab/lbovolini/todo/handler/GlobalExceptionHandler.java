@@ -1,12 +1,16 @@
 package com.gitlab.lbovolini.todo.handler;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -17,11 +21,20 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.*;
 
 @RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+    private final ObjectMapper objectMapper;
+
+    @Autowired
+    public GlobalExceptionHandler(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     static class ApiError {
         private final Date timestamp;
@@ -125,6 +138,36 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ApiError apiError = new ApiError(new Date(), httpStatus.value(), httpStatus.getReasonPhrase(), message, path, errorList);
 
         return ResponseEntity.status(httpStatus).body(apiError);
+    }
+
+    // !todo testar
+    @ExceptionHandler(BadCredentialsException.class)
+    protected ResponseEntity<Object> handleBadCredentials(BadCredentialsException ex, HttpServletRequest request) {
+        HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
+        String path = request.getRequestURI();
+
+        ApiError apiError = new ApiError(new Date(), httpStatus.value(), httpStatus.getReasonPhrase(), ex.getMessage(), path, List.of());
+
+        return ResponseEntity.status(httpStatus).body(apiError);
+    }
+
+    /**
+     * Handle restAuthenticationFailureHandler
+     * @param request
+     * @param response
+     * @param ex
+     * @throws IOException
+     */
+    public void handleRestAuthentication(HttpServletRequest request, HttpServletResponse response, Exception ex) throws IOException {
+        HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
+        String path = request.getRequestURI();
+
+        ApiError apiError = new ApiError(new Date(), httpStatus.value(), httpStatus.getReasonPhrase(), ex.getMessage(), path, List.of());
+
+        response.setStatus(httpStatus.value());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
+        objectMapper.writeValue(response.getOutputStream(), apiError);
     }
 
     private Error getError(DuplicateKeyException ex) {

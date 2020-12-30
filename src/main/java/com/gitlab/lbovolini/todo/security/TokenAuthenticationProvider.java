@@ -5,6 +5,9 @@ import com.gitlab.lbovolini.todo.service.AuthenticationService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.AbstractUserDetailsAuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -40,7 +43,12 @@ public class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticati
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
         String token = String.valueOf(authentication.getCredentials());
-        Claims claims = authenticationService.decode(token);
+        Claims claims;
+
+        try {
+            claims = authenticationService.decode(token);
+        } catch (Exception e) { throw new AuthenticationServiceException("Invalid token"); }
+
         String username = claims.getSubject();
         List<String> authorities = (List<String>) Objects.requireNonNullElse(claims.get("authorities"), List.of());
 
@@ -57,6 +65,6 @@ public class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticati
         return Optional.ofNullable(username)
                 .map(String::valueOf)
                 .flatMap(authenticationService::findByUsername)
-                .orElseThrow(() -> new RuntimeException("Cannot find username."));
+                .orElseThrow(() -> new AuthenticationServiceException("Cannot find username"));
     }
 }
