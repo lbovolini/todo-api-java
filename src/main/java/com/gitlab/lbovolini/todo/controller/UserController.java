@@ -16,7 +16,7 @@ import java.util.Optional;
  * Produz: MediaType.APPLICATION_JSON
  */
 @RestController
-@RequestMapping(path = "users",
+@RequestMapping(path = "api/v1/users",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController implements CrudController<User> {

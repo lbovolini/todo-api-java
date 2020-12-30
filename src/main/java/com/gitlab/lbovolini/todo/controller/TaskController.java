@@ -16,7 +16,7 @@ import java.util.Optional;
  * Produz: MediaType.APPLICATION_JSON
  */
 @RestController
-@RequestMapping(path = "tasks",
+@RequestMapping(path = "api/v1/tasks",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
 public class TaskController implements CrudController<Task> {
