@@ -3,6 +3,7 @@ package com.gitlab.lbovolini.todo.service;
 import com.gitlab.lbovolini.todo.model.User;
 import com.gitlab.lbovolini.todo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,12 +35,17 @@ public class UserService implements CrudService<User> {
     }
 
     @Override
-    public User save(User task) {
-        return userRepository.save(task);
+    public User save(User user) {
+        user.setPassword(hashedPassword(user));
+        return userRepository.save(user);
     }
 
     @Override
-    public void update(User task) {
-        userRepository.save(task);
+    public void update(User user) {
+        userRepository.save(user);
+    }
+
+    private String hashedPassword(User user) {
+        return BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12));
     }
 }
