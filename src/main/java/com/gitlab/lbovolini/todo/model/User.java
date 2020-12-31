@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -40,25 +39,26 @@ public class User implements UserDetails {
         return username;
     }
 
-    @JsonIgnore
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
-    @JsonIgnore
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return false;
     }
 
-    @JsonIgnore
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return true;
     }
@@ -67,8 +67,8 @@ public class User implements UserDetails {
         this.username = username;
     }
 
-    @JsonIgnore
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
     }
