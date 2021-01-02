@@ -1,0 +1,15 @@
+docker-compose.yml
+Dockerfile
+.dockerignore
+.git
+.gitignore
+*.md
+.idea
+.mvn
+mvnw
+mvnw.cmd
+*.iml
+.cache
+target/**
+!target/*.jar
+!target/*.war

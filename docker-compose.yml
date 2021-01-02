@@ -1,0 +1,20 @@
+services:
+  mongo:
+    image: mongo:4.4.2
+    container_name: mongodb
+    environment:
+      - MONGO_INITDB_DATABASE=todo
+    ports:
+      - 27017:27017
+    command: --logpath=/dev/null
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/todo
+    image: todo-api
+    ports:
+      - 8080:8080
+    #depends_on:
+    #  - mongo
