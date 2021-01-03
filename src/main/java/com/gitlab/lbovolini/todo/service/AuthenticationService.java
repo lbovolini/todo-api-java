@@ -40,32 +40,6 @@ public class AuthenticationService {
         return new AuthenticatedUser(user.getId(), user.getUsername(), token, ZonedDateTime.now().plusDays(VALID_DAYS));
     }
 
-    public User authenticate(UserCredentials userCredentials) {
-        Optional<User> user = userRepository.findByUsername(userCredentials.getUsername());
-
-        return user.stream()
-                .filter(u -> BCrypt.checkpw(userCredentials.getPassword(), u.getPassword()))
-                .findFirst()
-                // !todo criar excecao InvalidCredentialsException e adicionar ao tratador de excecao global
-                .orElseThrow(() -> new BadCredentialsException("Invalid username and/or password."));
-    }
-
-    public String generateToken(String subject) {
-        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(HASH_SHA512);
-
-        SecretKeySpec key = new SecretKeySpec(apiKeySecretBytes, SignatureAlgorithm.HS512.getJcaName());
-
-        Calendar expiration = Calendar.getInstance();
-        expiration.add(Calendar.DAY_OF_MONTH, VALID_DAYS);
-
-        return BEARER_PREFIX + " " + Jwts.builder()
-                .setSubject(subject)
-                .setIssuedAt(new Date()) // gerado em
-                .setExpiration(expiration.getTime()) // expira em
-                .signWith(key, SignatureAlgorithm.HS512)
-                .compact();
-    }
-
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
@@ -84,7 +58,33 @@ public class AuthenticationService {
                 .getBody();
     }
 
-    private static String extract(String token) {
+    private User authenticate(UserCredentials userCredentials) {
+        Optional<User> user = userRepository.findByUsername(userCredentials.getUsername());
+
+        return user.stream()
+                .filter(u -> BCrypt.checkpw(userCredentials.getPassword(), u.getPassword()))
+                .findFirst()
+                // !todo criar excecao InvalidCredentialsException e adicionar ao tratador de excecao global
+                .orElseThrow(() -> new BadCredentialsException("Invalid username and/or password."));
+    }
+
+    private String generateToken(String subject) {
+        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(HASH_SHA512);
+
+        SecretKeySpec key = new SecretKeySpec(apiKeySecretBytes, SignatureAlgorithm.HS512.getJcaName());
+
+        Calendar expiration = Calendar.getInstance();
+        expiration.add(Calendar.DAY_OF_MONTH, VALID_DAYS);
+
+        return BEARER_PREFIX + " " + Jwts.builder()
+                .setSubject(subject)
+                .setIssuedAt(new Date()) // gerado em
+                .setExpiration(expiration.getTime()) // expira em
+                .signWith(key, SignatureAlgorithm.HS512)
+                .compact();
+    }
+
+    private String extract(String token) {
         String tokenString = token;
 
         if (tokenString.startsWith(BEARER_PREFIX)) {
