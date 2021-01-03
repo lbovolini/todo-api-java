@@ -32,7 +32,7 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
         String token = Optional.ofNullable(param)
                 .map(value -> value.replace(BEARER, ""))
                 .map(String::trim)
-                .orElseThrow(() -> new BadCredentialsException("Missing Authentication Token."));
+                .orElseThrow(() -> new BadCredentialsException("Missing Authentication Token"));
 
         Authentication auth = new UsernamePasswordAuthenticationToken(token, token, List.of());
 

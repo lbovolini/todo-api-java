@@ -65,7 +65,7 @@ public class AuthenticationService {
                 .filter(u -> BCrypt.checkpw(userCredentials.getPassword(), u.getPassword()))
                 .findFirst()
                 // !todo criar excecao InvalidCredentialsException e adicionar ao tratador de excecao global
-                .orElseThrow(() -> new BadCredentialsException("Invalid username and/or password."));
+                .orElseThrow(() -> new BadCredentialsException("Invalid username and/or password"));
     }
 
     private String generateToken(String subject) {
