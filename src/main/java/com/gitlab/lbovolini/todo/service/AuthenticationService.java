@@ -2,6 +2,7 @@ package com.gitlab.lbovolini.todo.service;
 
 import com.gitlab.lbovolini.todo.model.User;
 import com.gitlab.lbovolini.todo.repository.UserRepository;
+import com.gitlab.lbovolini.todo.security.AuthenticatedUser;
 import com.gitlab.lbovolini.todo.security.UserCredentials;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
@@ -31,18 +33,18 @@ public class AuthenticationService {
         this.userRepository = userRepository;
     }
 
-    public String login(UserCredentials userCredentials) {
-        authenticate(userCredentials);
+    public AuthenticatedUser login(UserCredentials userCredentials) {
+        User user = authenticate(userCredentials);
+        String token = generateToken(userCredentials.getUsername());
 
-        return generateToken(userCredentials.getUsername());
+        return new AuthenticatedUser(user.getId(), user.getUsername(), token, ZonedDateTime.now().plusDays(VALID_DAYS));
     }
 
-    public void authenticate(UserCredentials userCredentials) {
+    public User authenticate(UserCredentials userCredentials) {
         Optional<User> user = userRepository.findByUsername(userCredentials.getUsername());
 
-        user.stream()
-                .map(u -> BCrypt.checkpw(userCredentials.getPassword(), u.getPassword()))
-                .filter(pass -> pass.equals(true))
+        return user.stream()
+                .filter(u -> BCrypt.checkpw(userCredentials.getPassword(), u.getPassword()))
                 .findFirst()
                 // !todo criar excecao InvalidCredentialsException e adicionar ao tratador de excecao global
                 .orElseThrow(() -> new BadCredentialsException("Invalid username and/or password."));

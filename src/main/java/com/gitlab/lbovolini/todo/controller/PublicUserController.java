@@ -1,6 +1,7 @@
 package com.gitlab.lbovolini.todo.controller;
 
 import com.gitlab.lbovolini.todo.model.User;
+import com.gitlab.lbovolini.todo.security.AuthenticatedUser;
 import com.gitlab.lbovolini.todo.security.UserCredentials;
 import com.gitlab.lbovolini.todo.service.AuthenticationService;
 import com.gitlab.lbovolini.todo.service.UserService;
@@ -32,9 +33,9 @@ public class PublicUserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody UserCredentials userCredentials) {
-        String token = authenticationService.login(userCredentials);
+    public ResponseEntity<AuthenticatedUser> login(@Valid @RequestBody UserCredentials userCredentials) {
+        AuthenticatedUser authenticatedUser = authenticationService.login(userCredentials);
 
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok(authenticatedUser);
     }
 }
