@@ -13,5 +13,5 @@ public interface CrudService<T> {
 
     T save(T t);
 
-    void update(T t);
+    Optional<T> update(T t);
 }

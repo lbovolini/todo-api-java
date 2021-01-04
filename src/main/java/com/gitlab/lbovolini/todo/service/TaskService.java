@@ -39,7 +39,7 @@ public class TaskService implements CrudService<Task> {
     }
 
     @Override
-    public void update(Task task) {
-        taskRepository.save(task);
+    public Optional<Task> update(Task task) {
+        return taskRepository.update(task);
     }
 }

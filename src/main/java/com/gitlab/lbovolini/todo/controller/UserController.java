@@ -86,13 +86,16 @@ public class UserController implements CrudController<User> {
     /**
      * Atualiza o usuário na base de dados.
      * @param user
-     * @return Retorna ResponseEntity com HttpStatus 200, ou HttpStatus 404 se o usuário com o id informado não for encontrado.
+     * @return Retorna ResponseEntity com o usuário atualizado e com HttpStatus 200, ou HttpStatus 404 se o usuário com o id informado não for encontrado.
      */
     @Override
     @PutMapping
-    public ResponseEntity<?> update(@Valid @RequestBody User user) {
-        userService.update(user);
+    public ResponseEntity<User> update(@Valid @RequestBody User user) {
+        Optional<User> userOptional = userService.update(user);
 
-        return ResponseEntity.ok().build();
+        return userOptional.stream()
+                .map(ResponseEntity::ok)
+                .findFirst()
+                .orElse(ResponseEntity.notFound().build());
     }
 }

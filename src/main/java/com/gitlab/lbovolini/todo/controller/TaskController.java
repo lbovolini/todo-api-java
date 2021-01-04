@@ -85,13 +85,16 @@ public class TaskController implements CrudController<Task> {
     /**
      * Atualiza a tarefa na base de dados.
      * @param task
-     * @return Retorna ResponseEntity com HttpStatus 200, ou HttpStatus 404 se a tarefa com o id informado não for encontrada.
+     * @return Retorna ResponseEntity com a tarefa atualizada e com HttpStatus 200, ou HttpStatus 404 se a tarefa com o id informado não for encontrada.
      */
     @Override
     @PutMapping
-    public ResponseEntity<?> update(@Valid @RequestBody Task task) {
-        taskService.update(task);
+    public ResponseEntity<Task> update(@Valid @RequestBody Task task) {
+        Optional<Task> taskOptional = taskService.update(task);
 
-        return ResponseEntity.ok().build();
+        return taskOptional.stream()
+                .map(ResponseEntity::ok)
+                .findFirst()
+                .orElse(ResponseEntity.notFound().build());
     }
 }

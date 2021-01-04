@@ -45,8 +45,9 @@ public class UserService implements CrudService<User> {
     }
 
     @Override
-    public void update(User user) {
-        userRepository.save(user);
+    public Optional<User> update(User user) {
+        user.setPassword(hashedPassword(user));
+        return userRepository.update(user);
     }
 
     private String hashedPassword(User user) {
