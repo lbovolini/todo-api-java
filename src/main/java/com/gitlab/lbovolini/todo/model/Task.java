@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
@@ -16,9 +17,20 @@ public class Task {
     private String name;
     @NotBlank
     private String description;
-    @NotBlank
+    @NotNull
     private ZonedDateTime date;
     private String attachment;
+
+    public Task() {
+    }
+
+    public Task(String id, String name, String description, ZonedDateTime date, String attachment) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.date = date;
+        this.attachment = attachment;
+    }
 
     public String getId() {
         return id;
