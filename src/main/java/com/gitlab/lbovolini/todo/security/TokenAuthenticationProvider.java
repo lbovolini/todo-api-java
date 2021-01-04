@@ -1,6 +1,7 @@
 package com.gitlab.lbovolini.todo.security;
 
 import com.gitlab.lbovolini.todo.service.AuthenticationService;
+import com.gitlab.lbovolini.todo.service.UserService;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -21,10 +22,12 @@ import java.util.stream.Collectors;
 public class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
     private final AuthenticationService authenticationService;
+    private final UserService userService;
 
     @Autowired
-    public TokenAuthenticationProvider(AuthenticationService authenticationService) {
+    public TokenAuthenticationProvider(AuthenticationService authenticationService, UserService userService) {
         this.authenticationService = authenticationService;
+        this.userService = userService;
     }
 
     @Override
@@ -50,6 +53,7 @@ public class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticati
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(claims.getSubject(), token,
                 authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
 
+        // !todo checar somente uma vez
         return this.createSuccessAuthentication(username, authentication, retrieveUser(username, authenticationToken));
     }
 
@@ -58,8 +62,7 @@ public class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticati
             String username,
             UsernamePasswordAuthenticationToken authenticationToken) throws AuthenticationException {
         return Optional.ofNullable(username)
-                .map(String::valueOf)
-                .flatMap(authenticationService::findByUsername)
+                .flatMap(userService::findByUsername)
                 .orElseThrow(() -> new AuthenticationServiceException("Cannot find username"));
     }
 }
