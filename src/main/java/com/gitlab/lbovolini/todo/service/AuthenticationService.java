@@ -7,6 +7,7 @@ import com.gitlab.lbovolini.todo.security.UserCredentials;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -26,9 +27,9 @@ public class AuthenticationService {
     // !todo mover para variavel de ambiente
     public static String HASH_SHA512 = "D31F9BB81B68134704060B4EE6FC772CF98F69D699A8456B296BD2D69AAF276E4AF927D0E5C62A8A4C85EC463B30ECB18D96D994A1B72D07A5D8503A9206080B";
 
-    // !todo UserRepository ou UserService ?
     private final UserRepository userRepository;
 
+    @Autowired
     public AuthenticationService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -40,14 +41,11 @@ public class AuthenticationService {
         return new AuthenticatedUser(user.getId(), user.getUsername(), token, ZonedDateTime.now().plusDays(VALID_DAYS));
     }
 
-    public Optional<User> findByUsername(String username) {
-        return userRepository.findByUsername(username);
-    }
-
-    public void logout(final User user) {
+    public void logout(User user) {
 
     }
 
+    // !todo retornar Map<String, Object>
     public Claims decode(String token) {
         String tokenString = extract(token);
 
