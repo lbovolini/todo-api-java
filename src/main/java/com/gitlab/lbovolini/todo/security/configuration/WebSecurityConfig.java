@@ -1,6 +1,6 @@
-package com.gitlab.lbovolini.todo.configuration.security;
+package com.gitlab.lbovolini.todo.security.configuration;
 
-import com.gitlab.lbovolini.todo.handler.GlobalExceptionHandler;
+import com.gitlab.lbovolini.todo.common.GlobalExceptionHandler;
 import com.gitlab.lbovolini.todo.security.NoRedirectStrategy;
 import com.gitlab.lbovolini.todo.security.TokenAuthenticationFilter;
 import com.gitlab.lbovolini.todo.security.TokenAuthenticationProvider;
