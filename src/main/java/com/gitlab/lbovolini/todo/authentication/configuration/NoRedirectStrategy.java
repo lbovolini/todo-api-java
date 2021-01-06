@@ -1,4 +1,4 @@
-package com.gitlab.lbovolini.todo.security;
+package com.gitlab.lbovolini.todo.authentication.configuration;
 
 import org.springframework.security.web.RedirectStrategy;
 
