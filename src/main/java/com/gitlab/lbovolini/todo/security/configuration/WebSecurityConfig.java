@@ -2,8 +2,8 @@ package com.gitlab.lbovolini.todo.security.configuration;
 
 import com.gitlab.lbovolini.todo.common.GlobalExceptionHandler;
 import com.gitlab.lbovolini.todo.security.NoRedirectStrategy;
-import com.gitlab.lbovolini.todo.security.TokenAuthenticationFilter;
-import com.gitlab.lbovolini.todo.security.TokenAuthenticationProvider;
+import com.gitlab.lbovolini.todo.authentication.TokenAuthenticationFilter;
+import com.gitlab.lbovolini.todo.authentication.TokenAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;

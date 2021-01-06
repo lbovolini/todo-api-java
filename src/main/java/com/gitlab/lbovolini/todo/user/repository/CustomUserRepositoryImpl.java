@@ -1,5 +1,6 @@
-package com.gitlab.lbovolini.todo.user.model;
+package com.gitlab.lbovolini.todo.user.repository;
 
+import com.gitlab.lbovolini.todo.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;

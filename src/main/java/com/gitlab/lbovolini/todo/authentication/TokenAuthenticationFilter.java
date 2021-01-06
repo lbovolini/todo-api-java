@@ -1,4 +1,4 @@
-package com.gitlab.lbovolini.todo.security;
+package com.gitlab.lbovolini.todo.authentication;
 
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

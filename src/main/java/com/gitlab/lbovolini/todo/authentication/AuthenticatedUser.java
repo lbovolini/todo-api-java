@@ -1,4 +1,4 @@
-package com.gitlab.lbovolini.todo.security;
+package com.gitlab.lbovolini.todo.authentication;
 
 import java.time.ZonedDateTime;
 

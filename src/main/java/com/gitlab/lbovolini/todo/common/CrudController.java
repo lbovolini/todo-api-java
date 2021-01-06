@@ -1,4 +1,4 @@
-package com.gitlab.lbovolini.todo.core;
+package com.gitlab.lbovolini.todo.common;
 
 import org.springframework.http.ResponseEntity;
 

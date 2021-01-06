@@ -1,8 +1,8 @@
-package com.gitlab.lbovolini.todo.service;
+package com.gitlab.lbovolini.todo.user.service;
 
-import com.gitlab.lbovolini.todo.core.CrudService;
+import com.gitlab.lbovolini.todo.common.CrudService;
 import com.gitlab.lbovolini.todo.user.model.User;
-import com.gitlab.lbovolini.todo.user.model.UserRepository;
+import com.gitlab.lbovolini.todo.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
