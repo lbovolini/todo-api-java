@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.constraints.Pattern;
 import java.util.Collection;
+import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 
@@ -27,7 +28,17 @@ public class DefaultUser implements UserDetails {
     @JsonIgnore
     protected Boolean accountNonLocked;
 
-    public DefaultUser() {}
+    public DefaultUser() {
+        authorities = List.of();
+        accountNonLocked = true;
+    }
+
+    public DefaultUser(String id, String username, String password) {
+        this();
+        this.id = id;
+        this.username = username;
+        this.password = password;
+    }
 
     public String getId() {
         return id;
