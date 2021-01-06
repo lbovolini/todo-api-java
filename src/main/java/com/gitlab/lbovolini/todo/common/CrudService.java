@@ -1,4 +1,4 @@
-package com.gitlab.lbovolini.todo.service;
+package com.gitlab.lbovolini.todo.core;
 
 import java.util.List;
 import java.util.Optional;

@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 @RestControllerAdvice
@@ -37,14 +38,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     static class ApiError {
-        private final Date timestamp;
+        private final ZonedDateTime timestamp;
         private final int status;
         private final String error;
         private final String message;
         private final String path;
         private final List<Error> errors;
 
-        public ApiError(Date timestamp, int status, String error, String message, String path, List<Error> errors) {
+        public ApiError(ZonedDateTime timestamp, int status, String error, String message, String path, List<Error> errors) {
             this.timestamp = timestamp;
             this.status = status;
             this.error = error;
@@ -53,7 +54,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             this.errors = errors;
         }
 
-        public Date getTimestamp() {
+        public ZonedDateTime getTimestamp() {
             return timestamp;
         }
 
@@ -122,7 +123,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         String message = "Method Argument Not Valid Exception";
         String path = ((ServletWebRequest)request).getRequest().getRequestURI();
 
-        ApiError apiError = new ApiError(new Date(), httpStatus.value(), httpStatus.getReasonPhrase(), message, path, errorList);
+        ApiError apiError = new ApiError(ZonedDateTime.now(), httpStatus.value(), httpStatus.getReasonPhrase(), message, path, errorList);
 
         return ResponseEntity.badRequest().body(apiError);
     }
@@ -135,7 +136,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         String message = "Duplicate Key Exception";
         String path = request.getRequestURI();
 
-        ApiError apiError = new ApiError(new Date(), httpStatus.value(), httpStatus.getReasonPhrase(), message, path, errorList);
+        ApiError apiError = new ApiError(ZonedDateTime.now(), httpStatus.value(), httpStatus.getReasonPhrase(), message, path, errorList);
 
         return ResponseEntity.status(httpStatus).body(apiError);
     }
@@ -146,7 +147,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
         String path = request.getRequestURI();
 
-        ApiError apiError = new ApiError(new Date(), httpStatus.value(), httpStatus.getReasonPhrase(), ex.getMessage(), path, List.of());
+        ApiError apiError = new ApiError(ZonedDateTime.now(), httpStatus.value(), httpStatus.getReasonPhrase(), ex.getMessage(), path, List.of());
 
         return ResponseEntity.status(httpStatus).body(apiError);
     }
@@ -162,7 +163,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
         String path = request.getRequestURI();
 
-        ApiError apiError = new ApiError(new Date(), httpStatus.value(), httpStatus.getReasonPhrase(), ex.getMessage(), path, List.of());
+        ApiError apiError = new ApiError(ZonedDateTime.now(), httpStatus.value(), httpStatus.getReasonPhrase(), ex.getMessage(), path, List.of());
 
         response.setStatus(httpStatus.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
