@@ -1,43 +1,22 @@
 package com.gitlab.lbovolini.todo.user.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
+import com.gitlab.lbovolini.todo.common.DefaultUser;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.validation.constraints.Pattern;
-import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 
-import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
-
 @Document
-public class User implements UserDetails {
-
-    @Id
-    private String id;
-    @Pattern(regexp = "^(\\w){3,20}\\b")
-    @Indexed(name = "user_username_index_unique", unique = true)
-    private String username;
-    @Pattern(regexp = "^(?=.*[\\d])(?=.*[a-z])[\\w!@#$%^&*()-=+,.;:]{8,}$")
-    @JsonProperty(access = WRITE_ONLY)
-    private String password;
+public class User extends DefaultUser {
 
     public User() {
+        super();
     }
 
     public User(String id, String username, String password) {
+        super();
         this.id = id;
         this.username = username;
         this.password = password;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public void setId(String id) {
@@ -48,42 +27,8 @@ public class User implements UserDetails {
         return username;
     }
 
-    @Override
-    @JsonIgnore
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    @JsonIgnore
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    @JsonIgnore
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    @JsonIgnore
-    public boolean isEnabled() {
-        return true;
-    }
-
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    @Override
-    @JsonIgnore
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public void setPassword(String password) {

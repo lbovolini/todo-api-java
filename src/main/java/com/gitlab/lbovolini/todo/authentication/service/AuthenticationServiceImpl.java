@@ -2,13 +2,14 @@ package com.gitlab.lbovolini.todo.authentication.service;
 
 import com.gitlab.lbovolini.todo.authentication.AuthenticatedUser;
 import com.gitlab.lbovolini.todo.authentication.UserCredentials;
-import com.gitlab.lbovolini.todo.user.model.User;
-import com.gitlab.lbovolini.todo.user.repository.UserRepository;
+import com.gitlab.lbovolini.todo.authentication.repository.AuthenticationRepository;
+import com.gitlab.lbovolini.todo.common.DefaultUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
@@ -27,19 +28,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     // !todo mover para variavel de ambiente
     public static String HASH_SHA512 = "D31F9BB81B68134704060B4EE6FC772CF98F69D699A8456B296BD2D69AAF276E4AF927D0E5C62A8A4C85EC463B30ECB18D96D994A1B72D07A5D8503A9206080B";
 
-    private final UserRepository userRepository;
+    private final AuthenticationRepository authenticationRepository;
 
     @Autowired
-    public AuthenticationServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public AuthenticationServiceImpl(AuthenticationRepository authenticationRepository) {
+        this.authenticationRepository = authenticationRepository;
     }
 
     @Override
     public AuthenticatedUser login(UserCredentials userCredentials) {
-        User user = authenticate(userCredentials);
+        DefaultUser defaultUser = authenticate(userCredentials);
         String token = generateToken(userCredentials.getUsername());
 
-        return new AuthenticatedUser(user.getId(), user.getUsername(), token, ZonedDateTime.now().plusDays(VALID_DAYS));
+        return new AuthenticatedUser(defaultUser.getId(), defaultUser.getUsername(), token, ZonedDateTime.now().plusDays(VALID_DAYS));
     }
 
     public void logout(User user) {
@@ -57,11 +58,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .getBody();
     }
 
-    private User authenticate(UserCredentials userCredentials) {
-        Optional<User> user = userRepository.findByUsername(userCredentials.getUsername());
+    private DefaultUser authenticate(UserCredentials userCredentials) {
+        Optional<DefaultUser> optionalUser = authenticationRepository.findByUsername(userCredentials.getUsername());
 
-        return user.stream()
-                .filter(u -> BCrypt.checkpw(userCredentials.getPassword(), u.getPassword()))
+        return optionalUser.stream()
+                .filter(user -> BCrypt.checkpw(userCredentials.getPassword(), user.getPassword()))
                 .findFirst()
                 // !todo criar excecao InvalidCredentialsException e adicionar ao tratador de excecao global
                 .orElseThrow(() -> new BadCredentialsException("Invalid username and/or password"));
