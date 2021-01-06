@@ -1,6 +1,6 @@
 package com.gitlab.lbovolini.todo.user.repository;
 
-import com.gitlab.lbovolini.todo.common.exception.UserNotFoundException;
+import com.gitlab.lbovolini.todo.common.exception.NotFoundException;
 import com.gitlab.lbovolini.todo.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
@@ -42,7 +42,7 @@ public class CustomUserRepositoryImpl implements CustomUserRepository {
         User user = mongoTemplate.findAndRemove(removeUserQuery, User.class);
 
         if (Objects.isNull(user)) {
-            throw new UserNotFoundException();
+            throw new NotFoundException("User not found");
         }
     }
 
