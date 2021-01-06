@@ -1,6 +1,10 @@
 package com.gitlab.lbovolini.todo.todo.model;
 
+import org.junit.jupiter.api.Test;
+
 import java.time.ZonedDateTime;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TaskUnitTest {
 
@@ -10,14 +14,13 @@ class TaskUnitTest {
     private ZonedDateTime date = ZonedDateTime.parse("2021-01-04T13:14:00.083+00:00");
     private String attachment = "";
 
-    /*@Test
+    @Test
     void shouldCreateTask() {
-        Task task = new Task(id, name, description, date, null);
+        Task task = new Task(id, name, description, date);
 
         assertEquals(name, task.getName());
         assertEquals(description, task.getDescription());
         assertEquals(date, task.getDate());
-        assertEquals(attachment, task.getAttachment());
     }
 
     @Test
@@ -26,12 +29,10 @@ class TaskUnitTest {
         task.setName(name);
         task.setDescription(description);
         task.setDate(date);
-        task.setAttachment(null);
 
         assertEquals(name, task.getName());
         assertEquals(description, task.getDescription());
         assertEquals(date, task.getDate());
-        assertEquals(attachment, task.getAttachment());
-    }*/
+    }
 
 }

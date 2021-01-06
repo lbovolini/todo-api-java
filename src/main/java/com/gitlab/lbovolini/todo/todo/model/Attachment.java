@@ -14,6 +14,10 @@ public class Attachment {
 
     public Attachment() {}
 
+    public Attachment(String path) {
+        this.path = path;
+    }
+
     public Attachment(String name, String path, String type, String extension, Long size) {
         this.name = name;
         this.path = path;
@@ -67,7 +71,11 @@ public class Attachment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Attachment that = (Attachment) o;
-        return Objects.equals(name, that.name) && Objects.equals(path, that.path) && Objects.equals(type, that.type) && Objects.equals(extension, that.extension) && Objects.equals(size, that.size);
+        return Objects.equals(name, that.name)
+                && Objects.equals(path, that.path)
+                && Objects.equals(type, that.type)
+                && Objects.equals(extension, that.extension)
+                && Objects.equals(size, that.size);
     }
 
     @Override

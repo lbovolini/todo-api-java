@@ -1,4 +1,4 @@
-package com.gitlab.lbovolini.todo.service;
+package com.gitlab.lbovolini.todo.user.service;
 
 import com.gitlab.lbovolini.todo.user.model.User;
 import com.gitlab.lbovolini.todo.user.repository.UserRepository;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
-class UserServiceUnitTest {
+class UserServiceImplUnitTest {
 
     private final String id = "5fecae92fc4878605c5c7a5b";
     private final String username = "lucas";
