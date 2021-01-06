@@ -1,12 +1,8 @@
-package com.gitlab.lbovolini.todo.model;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.format.annotation.DateTimeFormat;
+package com.gitlab.lbovolini.todo.todo.model;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
-import java.time.format.FormatStyle;
 import java.util.Objects;
 
 public class Task {
