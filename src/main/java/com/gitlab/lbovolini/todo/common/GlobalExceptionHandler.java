@@ -2,6 +2,7 @@ package com.gitlab.lbovolini.todo.common;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gitlab.lbovolini.todo.common.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -26,6 +27,7 @@ import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.*;
 
+// !todo refatorar
 @RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -120,7 +122,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         }
 
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-        String message = "Method Argument Not Valid Exception";
+        String message = "Method Argument Not Valid";
         String path = ((ServletWebRequest)request).getRequest().getRequestURI();
 
         ApiError apiError = new ApiError(ZonedDateTime.now(), httpStatus.value(), httpStatus.getReasonPhrase(), message, path, errorList);
@@ -133,7 +135,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         List<Error> errorList = List.of(getError(ex));
         HttpStatus httpStatus = HttpStatus.CONFLICT;
-        String message = "Duplicate Key Exception";
+        String message = "Duplicate Key";
         String path = request.getRequestURI();
 
         ApiError apiError = new ApiError(ZonedDateTime.now(), httpStatus.value(), httpStatus.getReasonPhrase(), message, path, errorList);
@@ -141,10 +143,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(httpStatus).body(apiError);
     }
 
-    // !todo testar
     @ExceptionHandler(BadCredentialsException.class)
     protected ResponseEntity<Object> handleBadCredentials(BadCredentialsException ex, HttpServletRequest request) {
         HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
+        String path = request.getRequestURI();
+
+        ApiError apiError = new ApiError(ZonedDateTime.now(), httpStatus.value(), httpStatus.getReasonPhrase(), ex.getMessage(), path, List.of());
+
+        return ResponseEntity.status(httpStatus).body(apiError);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    protected ResponseEntity<Object> handleUserNotFound(UserNotFoundException ex, HttpServletRequest request) {
+        HttpStatus httpStatus = HttpStatus.NOT_FOUND;
         String path = request.getRequestURI();
 
         ApiError apiError = new ApiError(ZonedDateTime.now(), httpStatus.value(), httpStatus.getReasonPhrase(), ex.getMessage(), path, List.of());
