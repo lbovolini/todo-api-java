@@ -1,8 +1,8 @@
-package com.gitlab.lbovolini.todo.todo;
+package com.gitlab.lbovolini.todo.todo.service;
 
 import com.gitlab.lbovolini.todo.todo.model.Attachment;
-import com.gitlab.lbovolini.todo.service.CrudService;
-import com.gitlab.lbovolini.todo.service.RemoteStorageService;
+import com.gitlab.lbovolini.todo.common.CrudService;
+import com.gitlab.lbovolini.todo.storage.RemoteStorageService;
 import com.gitlab.lbovolini.todo.todo.model.Todo;
 import com.gitlab.lbovolini.todo.todo.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class TodoService implements CrudService<Todo> {
 
     @Override
     public Todo save(Todo todo) {
-        throw new UnsupportedOperationException();
+        return todoRepository.save(todo);
     }
 
     public Todo save(Todo todo, MultipartFile multipartFile) {
@@ -65,7 +65,7 @@ public class TodoService implements CrudService<Todo> {
 
     @Override
     public Optional<Todo> update(Todo todo) {
-        throw new UnsupportedOperationException();
+        return todoRepository.update(todo);
     }
 
     public Optional<Todo> update(Todo todo, MultipartFile multipartFile) {
