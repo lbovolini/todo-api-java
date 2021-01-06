@@ -1,6 +1,6 @@
 package com.gitlab.lbovolini.todo.user.api;
 
-import com.gitlab.lbovolini.todo.user.service.UserService;
+import com.gitlab.lbovolini.todo.user.service.UserServiceImpl;
 import com.gitlab.lbovolini.todo.user.model.User;
 import com.gitlab.lbovolini.todo.authentication.AuthenticatedUser;
 import com.gitlab.lbovolini.todo.authentication.UserCredentials;
@@ -20,10 +20,10 @@ import javax.validation.Valid;
 public class PublicUserController {
 
     private final AuthenticationService authenticationService;
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     @Autowired
-    public PublicUserController(AuthenticationService authenticationService, UserService userService) {
+    public PublicUserController(AuthenticationService authenticationService, UserServiceImpl userService) {
         this.authenticationService = authenticationService;
         this.userService = userService;
     }

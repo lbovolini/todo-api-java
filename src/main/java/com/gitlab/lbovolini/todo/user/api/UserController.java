@@ -1,7 +1,7 @@
 package com.gitlab.lbovolini.todo.user.api;
 
 import com.gitlab.lbovolini.todo.common.CrudController;
-import com.gitlab.lbovolini.todo.user.service.UserService;
+import com.gitlab.lbovolini.todo.user.service.UserServiceImpl;
 import com.gitlab.lbovolini.todo.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -22,10 +22,10 @@ import java.util.Optional;
         produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController implements CrudController<User> {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserServiceImpl userService) {
         this.userService = userService;
     }
 

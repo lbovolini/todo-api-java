@@ -1,6 +1,5 @@
 package com.gitlab.lbovolini.todo.authentication;
 
-import com.gitlab.lbovolini.todo.authentication.AuthenticationService;
 import com.gitlab.lbovolini.todo.user.service.UserService;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
