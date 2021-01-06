@@ -24,10 +24,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
 
-// !todo refatorar
 @RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -47,13 +47,34 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         private final String path;
         private final List<Error> errors;
 
-        public ApiError(ZonedDateTime timestamp, int status, String error, String message, String path, List<Error> errors) {
+        private ApiError(ZonedDateTime timestamp, int status, String error, String message, String path, List<Error> errors) {
+            super();
             this.timestamp = timestamp;
             this.status = status;
             this.error = error;
             this.message = message;
             this.path = path;
             this.errors = errors;
+        }
+
+        public static ApiError with(HttpStatus httpStatus, String message, String path) {
+            return new ApiError(
+                    ZonedDateTime.now().withZoneSameInstant(ZoneId.of("UTC")),
+                    httpStatus.value(),
+                    httpStatus.getReasonPhrase(),
+                    message,
+                    path,
+                    List.of());
+        }
+
+        public static ApiError with(HttpStatus httpStatus, String message, String path, List<Error> errors) {
+            return new ApiError(
+                    ZonedDateTime.now().withZoneSameInstant(ZoneId.of("UTC")),
+                    httpStatus.value(),
+                    httpStatus.getReasonPhrase(),
+                    message,
+                    path,
+                    errors);
         }
 
         public ZonedDateTime getTimestamp() {
@@ -125,7 +146,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         String message = "Method Argument Not Valid";
         String path = ((ServletWebRequest)request).getRequest().getRequestURI();
 
-        ApiError apiError = new ApiError(ZonedDateTime.now(), httpStatus.value(), httpStatus.getReasonPhrase(), message, path, errorList);
+        ApiError apiError = ApiError.with(httpStatus, message, path, errorList);
 
         return ResponseEntity.badRequest().body(apiError);
     }
@@ -148,7 +169,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
         String path = request.getRequestURI();
 
-        ApiError apiError = new ApiError(ZonedDateTime.now(), httpStatus.value(), httpStatus.getReasonPhrase(), ex.getMessage(), path, List.of());
+        ApiError apiError = ApiError.with(httpStatus, ex.getMessage(), path);
 
         return ResponseEntity.status(httpStatus).body(apiError);
     }
@@ -158,7 +179,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         HttpStatus httpStatus = HttpStatus.NOT_FOUND;
         String path = request.getRequestURI();
 
-        ApiError apiError = new ApiError(ZonedDateTime.now(), httpStatus.value(), httpStatus.getReasonPhrase(), ex.getMessage(), path, List.of());
+        ApiError apiError = ApiError.with(httpStatus, ex.getMessage(), path);
 
         return ResponseEntity.status(httpStatus).body(apiError);
     }
@@ -174,7 +195,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
         String path = request.getRequestURI();
 
-        ApiError apiError = new ApiError(ZonedDateTime.now(), httpStatus.value(), httpStatus.getReasonPhrase(), ex.getMessage(), path, List.of());
+        ApiError apiError = ApiError.with(httpStatus, ex.getMessage(), path);
 
         response.setStatus(httpStatus.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
