@@ -1,17 +1,13 @@
 package com.gitlab.lbovolini.todo.configuration.security;
 
-import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import com.gitlab.lbovolini.todo.handler.GlobalExceptionHandler;
 import com.gitlab.lbovolini.todo.security.NoRedirectStrategy;
 import com.gitlab.lbovolini.todo.security.TokenAuthenticationFilter;
 import com.gitlab.lbovolini.todo.security.TokenAuthenticationProvider;
-import org.bson.codecs.jsr310.Jsr310CodecProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.format.Formatter;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,11 +23,6 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-
-import java.text.ParseException;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
@@ -111,7 +102,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * Disable Spring boot automatic filter registration.
+     * Desabilita o filtro automático de registro do Spring Boot.
+     *
+     * @param filter
+     * @return
      */
     @Bean
     public FilterRegistrationBean disableAutoRegistration(final TokenAuthenticationFilter filter) {
@@ -137,23 +131,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationFailureHandler restAuthenticationFailureHandler() {
         return globalExceptionHandler::handleRestAuthentication;
     }
-
-    @Bean
-    public Formatter<ZonedDateTime> zonedDateTimeFormatter() {
-        return new Formatter<ZonedDateTime>() {
-            @Override
-            public ZonedDateTime parse(String text, Locale locale) throws ParseException {
-                System.out.println("A");
-                return ZonedDateTime.parse(text, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-            }
-
-            @Override
-            public String print(ZonedDateTime object, Locale locale) {
-                System.out.println("B");
-                return DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(object);
-            }
-        };
-    }
-
-
 }
