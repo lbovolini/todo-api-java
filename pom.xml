@@ -57,6 +57,11 @@
 			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>1.5.2</version>
 		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk</artifactId>
+			<version>1.11.930</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
