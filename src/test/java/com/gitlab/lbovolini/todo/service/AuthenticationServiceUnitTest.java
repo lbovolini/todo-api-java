@@ -1,6 +1,6 @@
 package com.gitlab.lbovolini.todo.service;
 
-import com.gitlab.lbovolini.todo.authentication.AuthenticationService;
+import com.gitlab.lbovolini.todo.authentication.service.AuthenticationServiceImpl;
 import com.gitlab.lbovolini.todo.user.model.User;
 import com.gitlab.lbovolini.todo.user.repository.UserRepository;
 import com.gitlab.lbovolini.todo.authentication.AuthenticatedUser;
@@ -33,7 +33,7 @@ class AuthenticationServiceUnitTest {
     private UserRepository userRepository;
 
     @InjectMocks
-    private AuthenticationService authenticationService;
+    private AuthenticationServiceImpl authenticationService;
 
     @Test
     void shouldAllowUserLoginWithCredentials() {

@@ -1,5 +1,7 @@
-package com.gitlab.lbovolini.todo.authentication;
+package com.gitlab.lbovolini.todo.authentication.service;
 
+import com.gitlab.lbovolini.todo.authentication.AuthenticatedUser;
+import com.gitlab.lbovolini.todo.authentication.UserCredentials;
 import com.gitlab.lbovolini.todo.user.model.User;
 import com.gitlab.lbovolini.todo.user.repository.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -18,7 +20,7 @@ import java.util.Date;
 import java.util.Optional;
 
 @Service
-public class AuthenticationService {
+public class AuthenticationServiceImpl implements AuthenticationService {
 
     public static final int VALID_DAYS = 30;
     public static final String BEARER_PREFIX = "Bearer";
@@ -28,10 +30,11 @@ public class AuthenticationService {
     private final UserRepository userRepository;
 
     @Autowired
-    public AuthenticationService(UserRepository userRepository) {
+    public AuthenticationServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+    @Override
     public AuthenticatedUser login(UserCredentials userCredentials) {
         User user = authenticate(userCredentials);
         String token = generateToken(userCredentials.getUsername());
