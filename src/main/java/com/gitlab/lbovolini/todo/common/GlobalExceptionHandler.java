@@ -1,4 +1,4 @@
-package com.gitlab.lbovolini.todo.handler;
+package com.gitlab.lbovolini.todo.common;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
