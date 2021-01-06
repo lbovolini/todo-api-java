@@ -1,10 +1,10 @@
-package com.gitlab.lbovolini.todo.controller;
+package com.gitlab.lbovolini.todo.user;
 
-import com.gitlab.lbovolini.todo.model.User;
+import com.gitlab.lbovolini.todo.user.User;
 import com.gitlab.lbovolini.todo.security.AuthenticatedUser;
 import com.gitlab.lbovolini.todo.security.UserCredentials;
 import com.gitlab.lbovolini.todo.service.AuthenticationService;
-import com.gitlab.lbovolini.todo.service.UserService;
+import com.gitlab.lbovolini.todo.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

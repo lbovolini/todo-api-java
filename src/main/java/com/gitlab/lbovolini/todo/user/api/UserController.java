@@ -1,7 +1,6 @@
-package com.gitlab.lbovolini.todo.controller;
+package com.gitlab.lbovolini.todo.user;
 
-import com.gitlab.lbovolini.todo.model.User;
-import com.gitlab.lbovolini.todo.service.UserService;
+import com.gitlab.lbovolini.todo.controller.CrudController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

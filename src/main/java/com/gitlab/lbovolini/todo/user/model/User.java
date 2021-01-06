@@ -1,4 +1,4 @@
-package com.gitlab.lbovolini.todo.model;
+package com.gitlab.lbovolini.todo.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

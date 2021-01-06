@@ -1,6 +1,5 @@
-package com.gitlab.lbovolini.todo.repository;
+package com.gitlab.lbovolini.todo.user.model;
 
-import com.gitlab.lbovolini.todo.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;

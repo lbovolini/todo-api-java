@@ -1,22 +1,47 @@
-package com.gitlab.lbovolini.todo.repository;
+package com.gitlab.lbovolini.todo.user.model;
 
-import com.gitlab.lbovolini.todo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 public class CustomUserRepositoryImpl implements CustomUserRepository {
+
+    private final Set<String> collectionsNameWhereUserIsPresent = Set.of("todo");
 
     private final MongoTemplate mongoTemplate;
 
     @Autowired
     public CustomUserRepositoryImpl(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
+    }
+
+    /**
+     * Remove o usuário e todas as coleções associadas ao usuário.
+     * @param id
+     */
+    @Override
+    @Transactional
+    public void delete(String id) {
+        Query removeCollectionWhereUserIsPresentQuery = Query.query(Criteria.where("{ user: id }").is(id));
+        Query removeUserQuery = Query.query(Criteria.where("id").is(id));
+
+        collectionsNameWhereUserIsPresent.forEach(collectionName -> {
+            mongoTemplate.remove(removeCollectionWhereUserIsPresentQuery, collectionName);
+        });
+
+        User user = mongoTemplate.findAndRemove(removeUserQuery, User.class);
+
+        if (Objects.isNull(user)) {
+            throw new RuntimeException("User not found"); //UserNotFoundException();
+        }
     }
 
     /**

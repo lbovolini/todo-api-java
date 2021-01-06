@@ -1,7 +1,7 @@
 package com.gitlab.lbovolini.todo.service;
 
-import com.gitlab.lbovolini.todo.model.User;
-import com.gitlab.lbovolini.todo.repository.UserRepository;
+import com.gitlab.lbovolini.todo.user.User;
+import com.gitlab.lbovolini.todo.user.UserRepository;
 import com.gitlab.lbovolini.todo.security.AuthenticatedUser;
 import com.gitlab.lbovolini.todo.security.UserCredentials;
 import io.jsonwebtoken.Claims;

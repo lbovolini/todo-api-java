@@ -1,11 +1,13 @@
-package com.gitlab.lbovolini.todo.controller;
+package com.gitlab.lbovolini.todo.todo.api;
 
-import com.gitlab.lbovolini.todo.model.Task;
-import com.gitlab.lbovolini.todo.service.TaskService;
+import com.gitlab.lbovolini.todo.controller.CrudController;
+import com.gitlab.lbovolini.todo.todo.TodoService;
+import com.gitlab.lbovolini.todo.todo.model.Todo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -16,16 +18,16 @@ import java.util.Optional;
  * Produz: MediaType.APPLICATION_JSON
  */
 @RestController
-@RequestMapping(path = "api/v1/tasks",
+@RequestMapping(path = "api/v1/todos",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
-public class TaskController implements CrudController<Task> {
+public class TodoController implements CrudController<Todo> {
 
-    private final TaskService taskService;
+    private final TodoService todoService;
 
     @Autowired
-    public TaskController(TaskService taskService) {
-        this.taskService = taskService;
+    public TodoController(TodoService todoService) {
+        this.todoService = todoService;
     }
 
     /**
@@ -36,7 +38,7 @@ public class TaskController implements CrudController<Task> {
     @Override
     @DeleteMapping("{id}")
     public ResponseEntity<?> delete(@PathVariable String id) {
-        taskService.delete(id);
+        todoService.delete(id);
 
         return ResponseEntity.noContent().build();
     }
@@ -48,10 +50,10 @@ public class TaskController implements CrudController<Task> {
      */
     @Override
     @GetMapping("{id}")
-    public ResponseEntity<Task> findById(@PathVariable String id) {
-        Optional<Task> taskOptional = taskService.findById(id);
+    public ResponseEntity<Todo> findById(@PathVariable String id) {
+        Optional<Todo> todoOptional = todoService.findById(id);
 
-        return taskOptional.stream()
+        return todoOptional.stream()
                 .map(ResponseEntity::ok)
                 .findFirst()
                 .orElse(ResponseEntity.notFound().build());
@@ -63,10 +65,20 @@ public class TaskController implements CrudController<Task> {
      */
     @Override
     @GetMapping
-    public ResponseEntity<List<Task>> findAll() {
-        List<Task> taskList = taskService.findAll();
+    public ResponseEntity<List<Todo>> findAll() {
+        List<Todo> todoList = todoService.findAll();
 
-        return ResponseEntity.ok(taskList);
+        return ResponseEntity.ok(todoList);
+    }
+
+    @Override
+    public ResponseEntity<Todo> save(Todo todo) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<?> update(Todo todo) {
+        return null;
     }
 
     /**
@@ -74,12 +86,11 @@ public class TaskController implements CrudController<Task> {
      * @param task
      * @return Retorna ResponseEntity com a tarefa salva e com HttpStatus 200, ou HttpStatus 409 se a tarefa informada já existe na base de dados.
      */
-    @Override
-    @PostMapping
-    public ResponseEntity<Task> save(@Valid @RequestBody Task task) {
-        Task savedTask = taskService.save(task);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Todo> save(@Valid @RequestPart Todo todo, @RequestParam MultipartFile attachment) {
+        Todo savedTodo = todoService.save(todo, attachment);
 
-        return ResponseEntity.ok(savedTask);
+        return ResponseEntity.ok(savedTodo);
     }
 
     /**
@@ -87,12 +98,11 @@ public class TaskController implements CrudController<Task> {
      * @param task
      * @return Retorna ResponseEntity com a tarefa atualizada e com HttpStatus 200, ou HttpStatus 404 se a tarefa com o id informado não for encontrada.
      */
-    @Override
-    @PutMapping
-    public ResponseEntity<Task> update(@Valid @RequestBody Task task) {
-        Optional<Task> taskOptional = taskService.update(task);
+    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Todo> update(@Valid @RequestPart Todo todo, @RequestParam MultipartFile attachment) {
+        Optional<Todo> todoOptional = todoService.update(todo, attachment);
 
-        return taskOptional.stream()
+        return todoOptional.stream()
                 .map(ResponseEntity::ok)
                 .findFirst()
                 .orElse(ResponseEntity.notFound().build());
