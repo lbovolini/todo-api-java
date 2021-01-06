@@ -1,6 +1,7 @@
 package com.gitlab.lbovolini.todo.authentication;
 
 import com.gitlab.lbovolini.todo.authentication.service.AuthenticationService;
+import com.gitlab.lbovolini.todo.common.DefaultUser;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -9,12 +10,12 @@ import org.springframework.security.authentication.dao.AbstractUserDetailsAuthen
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -58,9 +59,11 @@ public class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticati
     protected UserDetails retrieveUser(
             String username,
             UsernamePasswordAuthenticationToken authenticationToken) throws AuthenticationException {
-        /*return Optional.ofNullable(username)
-                .flatMap(userService::findByUsername)
-                .orElseThrow(() -> new AuthenticationServiceException("Cannot find username"));*/
-        return new User(username, (String)authenticationToken.getCredentials(), authenticationToken.getAuthorities());
+        return Optional.ofNullable(username)
+                .map(authenticationService::findByUsername)
+                .orElseThrow(() -> new AuthenticationServiceException("Cannot find username"))
+                .filter(DefaultUser::isAccountNonLocked)
+                .orElseThrow(() -> new AuthenticationServiceException("User is locked, authenticate again to unlock"));
+        //return new User(username, (String)authenticationToken.getCredentials(), authenticationToken.getAuthorities());
     }
 }

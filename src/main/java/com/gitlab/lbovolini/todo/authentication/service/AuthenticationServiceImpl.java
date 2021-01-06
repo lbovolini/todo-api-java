@@ -9,7 +9,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
@@ -36,18 +35,30 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
+    public Optional<DefaultUser> findByUsername(String username) {
+        return authenticationRepository.findByUsername(username);
+    }
+
+    @Override
     public AuthenticatedUser login(UserCredentials userCredentials) {
         DefaultUser defaultUser = authenticate(userCredentials);
+        authenticationRepository.unlockAccount(defaultUser.getUsername());
         String token = generateToken(userCredentials.getUsername());
 
         return new AuthenticatedUser(defaultUser.getId(), defaultUser.getUsername(), token, ZonedDateTime.now().plusDays(VALID_DAYS));
     }
 
-    public void logout(User user) {
-
+    /**
+     * Não invalida o token.
+     * @param username
+     */
+    @Override
+    public void logout(String username) {
+        authenticationRepository.lockAccount(username);
     }
 
     // !todo retornar Map<String, Object>
+    @Override
     public Claims decode(String token) {
         String tokenString = extract(token);
 

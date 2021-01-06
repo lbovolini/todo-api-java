@@ -7,4 +7,8 @@ import java.util.Optional;
 public interface AuthenticationRepository {
 
     Optional<DefaultUser> findByUsername(String username);
+
+    void lockAccount(String username);
+
+    void unlockAccount(String username);
 }
