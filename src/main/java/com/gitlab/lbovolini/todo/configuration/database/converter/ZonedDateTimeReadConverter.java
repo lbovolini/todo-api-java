@@ -1,4 +1,4 @@
-package com.gitlab.lbovolini.todo.configuration.mongo.converter;
+package com.gitlab.lbovolini.todo.configuration.database.converter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,7 +1,7 @@
-package com.gitlab.lbovolini.todo.configuration.mongo;
+package com.gitlab.lbovolini.todo.configuration.database;
 
-import com.gitlab.lbovolini.todo.configuration.mongo.converter.ZonedDateTimeReadConverter;
-import com.gitlab.lbovolini.todo.configuration.mongo.converter.ZonedDateTimeWriteConverter;
+import com.gitlab.lbovolini.todo.configuration.database.converter.ZonedDateTimeReadConverter;
+import com.gitlab.lbovolini.todo.configuration.database.converter.ZonedDateTimeWriteConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -15,9 +15,9 @@ import java.util.List;
 @Configuration
 public class MongoConfig extends AbstractMongoClientConfiguration {
 
-    private final List<Converter<?, ?>> converters = new ArrayList<>();
-
     private final String databaseName;
+
+    private final List<Converter<?, ?>> converters = new ArrayList<>();
 
     private final ZonedDateTimeReadConverter zonedDateTimeReadConverter;
     private final ZonedDateTimeWriteConverter zonedDateTimeWriteConverter;

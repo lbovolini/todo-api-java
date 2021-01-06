@@ -1,5 +1,6 @@
-package com.gitlab.lbovolini.todo.configuration.mongo.converter;
+package com.gitlab.lbovolini.todo.configuration.database.converter;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
@@ -10,10 +11,12 @@ import java.time.format.DateTimeFormatter;
 @Component
 public class ZonedDateTimeWriteConverter implements Converter<ZonedDateTime, String> {
 
-    @Value("${date.time.format:yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSSxxx}")
-    private String dateTimeFormat;
+    private final String dateTimeFormat;
 
-    public ZonedDateTimeWriteConverter(String a){}
+    @Autowired
+    public ZonedDateTimeWriteConverter(@Value("${date.time.format:yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSSxxx}") String dateTimeFormat){
+        this.dateTimeFormat = dateTimeFormat;
+    }
 
     @Override
     public String convert(ZonedDateTime zonedDateTime) {
