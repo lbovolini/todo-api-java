@@ -1,10 +1,6 @@
-package com.gitlab.lbovolini.todo.model;
-
-import org.junit.jupiter.api.Test;
+package com.gitlab.lbovolini.todo.todo.model;
 
 import java.time.ZonedDateTime;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class TaskUnitTest {
 

@@ -1,19 +1,9 @@
 package com.gitlab.lbovolini.todo.service;
 
-import com.gitlab.lbovolini.todo.model.Task;
-import com.gitlab.lbovolini.todo.repository.TaskRepository;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class TodoServiceUnitTest {
@@ -23,9 +13,9 @@ class TodoServiceUnitTest {
     private String description = "Terminar teste Code Fiction";
     private ZonedDateTime date = ZonedDateTime.parse("2021-01-04T13:14:00.083+00:00");
     private String attachment = "";
-    private Task task = new Task(id, name, description, date, null);
+    //private Task task = new Task(id, name, description, date, null);
 
-    @Mock
+   /* @Mock
     private TaskRepository taskRepository;
 
     @InjectMocks
@@ -77,5 +67,5 @@ class TodoServiceUnitTest {
         Optional<Task> taskOptional = todoService.update(task);
 
         assertEquals(Optional.empty(), taskOptional);
-    }
+    }*/
 }

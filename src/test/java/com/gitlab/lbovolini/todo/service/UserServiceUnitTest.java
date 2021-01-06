@@ -1,7 +1,8 @@
 package com.gitlab.lbovolini.todo.service;
 
-import com.gitlab.lbovolini.todo.model.User;
-import com.gitlab.lbovolini.todo.repository.UserRepository;
+import com.gitlab.lbovolini.todo.user.model.User;
+import com.gitlab.lbovolini.todo.user.repository.UserRepository;
+import com.gitlab.lbovolini.todo.user.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

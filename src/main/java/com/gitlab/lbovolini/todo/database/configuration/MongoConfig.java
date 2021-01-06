@@ -1,7 +1,7 @@
-package com.gitlab.lbovolini.todo.configuration.database;
+package com.gitlab.lbovolini.todo.database.configuration;
 
-import com.gitlab.lbovolini.todo.configuration.database.converter.ZonedDateTimeReadConverter;
-import com.gitlab.lbovolini.todo.configuration.database.converter.ZonedDateTimeWriteConverter;
+import com.gitlab.lbovolini.todo.database.converter.ZonedDateTimeReadConverter;
+import com.gitlab.lbovolini.todo.database.converter.ZonedDateTimeWriteConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

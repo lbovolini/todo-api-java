@@ -1,4 +1,4 @@
-package com.gitlab.lbovolini.todo.configuration.database.converter;
+package com.gitlab.lbovolini.todo.database.converter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,17 +9,17 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Component
-public class ZonedDateTimeReadConverter implements Converter<String, ZonedDateTime> {
+public class ZonedDateTimeWriteConverter implements Converter<ZonedDateTime, String> {
 
     private final String dateTimeFormat;
 
     @Autowired
-    public ZonedDateTimeReadConverter(@Value("${date.time.format:yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSSxxx}") String dateTimeFormat) {
+    public ZonedDateTimeWriteConverter(@Value("${date.time.format:yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSSxxx}") String dateTimeFormat){
         this.dateTimeFormat = dateTimeFormat;
     }
 
     @Override
-    public ZonedDateTime convert(String date) {
-        return ZonedDateTime.parse(date, DateTimeFormatter.ofPattern(dateTimeFormat));
+    public String convert(ZonedDateTime zonedDateTime) {
+        return zonedDateTime.format(DateTimeFormatter.ofPattern(dateTimeFormat));
     }
 }

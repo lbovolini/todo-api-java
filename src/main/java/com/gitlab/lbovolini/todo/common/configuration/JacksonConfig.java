@@ -1,4 +1,4 @@
-package com.gitlab.lbovolini.todo.configuration.parser;
+package com.gitlab.lbovolini.todo.common.configuration;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;

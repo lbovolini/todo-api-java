@@ -1,3 +1,4 @@
+version: '3'
 services:
   mongo:
     image: mongo:4.4.2
@@ -8,12 +9,12 @@ services:
       - 27017:27017
     command: --logpath=/dev/null
   api:
-    build:
-      dockerfile: Dockerfile
-      context: .
+    #build:
+    #  dockerfile: Dockerfile
+    #  context: .
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/todo
-    image: todo-api
+    image: todo-api-image
     ports:
       - 8080:8080
     #depends_on:

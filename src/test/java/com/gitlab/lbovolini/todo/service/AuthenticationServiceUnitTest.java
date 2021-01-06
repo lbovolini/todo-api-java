@@ -1,9 +1,10 @@
 package com.gitlab.lbovolini.todo.service;
 
-import com.gitlab.lbovolini.todo.model.User;
-import com.gitlab.lbovolini.todo.repository.UserRepository;
-import com.gitlab.lbovolini.todo.security.AuthenticatedUser;
-import com.gitlab.lbovolini.todo.security.UserCredentials;
+import com.gitlab.lbovolini.todo.authentication.AuthenticationService;
+import com.gitlab.lbovolini.todo.user.model.User;
+import com.gitlab.lbovolini.todo.user.repository.UserRepository;
+import com.gitlab.lbovolini.todo.authentication.AuthenticatedUser;
+import com.gitlab.lbovolini.todo.authentication.UserCredentials;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
