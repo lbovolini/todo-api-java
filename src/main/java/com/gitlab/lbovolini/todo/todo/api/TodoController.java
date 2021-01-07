@@ -54,6 +54,7 @@ public class TodoController implements CrudController<Todo> {
     }
 
     @Override
+    @PostMapping
     public ResponseEntity<Todo> save(@Valid @RequestBody Todo todo) {
         Todo savedTodo = todoService.save(todo);
 
@@ -68,6 +69,7 @@ public class TodoController implements CrudController<Todo> {
     }
 
     @Override
+    @PutMapping
     public ResponseEntity<Todo> update(@Valid @RequestBody Todo todo) {
         Optional<Todo> todoOptional = todoService.update(todo);
 
