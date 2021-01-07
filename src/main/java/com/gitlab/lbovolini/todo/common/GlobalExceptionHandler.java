@@ -15,6 +15,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -178,6 +179,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleUserNotFound(NotFoundException ex, HttpServletRequest request) {
         HttpStatus httpStatus = HttpStatus.NOT_FOUND;
         String path = request.getRequestURI();
+
+        ApiError apiError = ApiError.with(httpStatus, ex.getMessage(), path);
+
+        return ResponseEntity.status(httpStatus).body(apiError);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        String path = ((ServletWebRequest)request).getRequest().getRequestURI();
 
         ApiError apiError = ApiError.with(httpStatus, ex.getMessage(), path);
 
