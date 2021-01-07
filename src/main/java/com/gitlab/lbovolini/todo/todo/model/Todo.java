@@ -3,6 +3,7 @@ package com.gitlab.lbovolini.todo.todo.model;
 import nonapi.io.github.classgraph.json.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,6 +12,7 @@ public class Todo {
 
     @Id
     private String id;
+    @NotBlank
     private String userId;
     private List<Task> tasks;
     private List<Attachment> attachments;

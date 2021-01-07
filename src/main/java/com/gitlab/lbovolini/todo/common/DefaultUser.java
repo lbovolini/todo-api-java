@@ -7,6 +7,8 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Collection;
 import java.util.List;
@@ -17,9 +19,11 @@ public class DefaultUser implements UserDetails {
 
     @Id
     protected String id;
+    @NotBlank
     @Pattern(regexp = "^(\\w){3,20}\\b")
     @Indexed(name = "user_username_index_unique", unique = true)
     protected String username;
+    @NotBlank
     @Pattern(regexp = "^(?=.*[\\d])(?=.*[a-z])[\\w!@#$%^&*()-=+,.;:]{8,}$")
     @JsonProperty(access = WRITE_ONLY)
     protected String password;
