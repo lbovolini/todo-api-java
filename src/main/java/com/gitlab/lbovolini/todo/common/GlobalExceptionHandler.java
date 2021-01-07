@@ -159,7 +159,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         String message = "Duplicate Key";
         String path = request.getRequestURI();
 
-        ApiError apiError = new ApiError(ZonedDateTime.now(), httpStatus.value(), httpStatus.getReasonPhrase(), message, path, errorList);
+        ApiError apiError = ApiError.with(httpStatus, message, path, errorList);
 
         return ResponseEntity.status(httpStatus).body(apiError);
     }
