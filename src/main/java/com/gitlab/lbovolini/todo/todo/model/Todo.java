@@ -1,5 +1,6 @@
 package com.gitlab.lbovolini.todo.todo.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import nonapi.io.github.classgraph.json.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,7 +15,9 @@ public class Todo {
     private String id;
     @NotBlank
     private String userId;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Task> tasks;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Attachment> attachments;
 
     public Todo() {}
