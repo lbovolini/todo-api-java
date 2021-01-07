@@ -1,6 +1,8 @@
 package com.gitlab.lbovolini.todo.authentication.repository;
 
 import com.gitlab.lbovolini.todo.common.DefaultUser;
+import com.gitlab.lbovolini.todo.common.exception.NotFoundException;
+import com.mongodb.client.result.UpdateResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -35,7 +37,11 @@ public class AuthenticationRepositoryImpl implements AuthenticationRepository {
         Update update = new Update();
         update.set("accountNonLocked", false);
 
-        mongoTemplate.updateFirst(query, update, "user");
+        UpdateResult updateResult = mongoTemplate.updateFirst(query, update, "user");
+
+        if (updateResult.getMatchedCount() < 1) {
+            throw new NotFoundException("Username not found");
+        }
     }
 
     @Override
