@@ -1,5 +1,6 @@
 package com.gitlab.lbovolini.todo.database.configuration;
 
+import com.gitlab.lbovolini.todo.database.converter.DateToZonedDateTimeReadConverter;
 import com.gitlab.lbovolini.todo.database.converter.ZonedDateTimeReadConverter;
 import com.gitlab.lbovolini.todo.database.converter.ZonedDateTimeWriteConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +22,17 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
 
     private final ZonedDateTimeReadConverter zonedDateTimeReadConverter;
     private final ZonedDateTimeWriteConverter zonedDateTimeWriteConverter;
+    private final DateToZonedDateTimeReadConverter dateToZonedDateTimeReadConverter;
 
     @Autowired
     public MongoConfig(@Value("${spring.data.mongodb.database:todo}") String databaseName,
                        ZonedDateTimeReadConverter zonedDateTimeReadConverter,
-                       ZonedDateTimeWriteConverter zonedDateTimeWriteConverter) {
+                       ZonedDateTimeWriteConverter zonedDateTimeWriteConverter,
+                       DateToZonedDateTimeReadConverter dateToZonedDateTimeReadConverter) {
         this.databaseName = databaseName;
         this.zonedDateTimeWriteConverter = zonedDateTimeWriteConverter;
         this.zonedDateTimeReadConverter = zonedDateTimeReadConverter;
+        this.dateToZonedDateTimeReadConverter = dateToZonedDateTimeReadConverter;
     }
 
     @Override
@@ -40,6 +44,7 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
     public MongoCustomConversions customConversions() {
         converters.add(zonedDateTimeReadConverter);
         converters.add(zonedDateTimeWriteConverter);
+        converters.add(dateToZonedDateTimeReadConverter);
 
         return new MongoCustomConversions(converters);
     }
