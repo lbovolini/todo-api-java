@@ -1,15 +1,28 @@
 package com.gitlab.lbovolini.todo.todo.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
+
 public class Attachment {
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @JsonProperty(access = WRITE_ONLY)
     private String name;
     @NotBlank
     private String path;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @JsonProperty(access = WRITE_ONLY)
     private String type;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @JsonProperty(access = WRITE_ONLY)
     private String extension;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @JsonProperty(access = WRITE_ONLY)
     private Long size;
 
     public Attachment() {}
