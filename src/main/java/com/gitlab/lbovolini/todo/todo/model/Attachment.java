@@ -6,23 +6,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
-import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.READ_ONLY;
 
 public class Attachment {
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @JsonProperty(access = WRITE_ONLY)
+    @JsonProperty(access = READ_ONLY)
     private String name;
     @NotBlank
     private String path;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @JsonProperty(access = WRITE_ONLY)
+    @JsonProperty(access = READ_ONLY)
     private String type;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @JsonProperty(access = WRITE_ONLY)
+    @JsonProperty(access = READ_ONLY)
     private String extension;
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    @JsonProperty(access = WRITE_ONLY)
+    @JsonProperty(access = READ_ONLY)
     private Long size;
 
     public Attachment() {}
