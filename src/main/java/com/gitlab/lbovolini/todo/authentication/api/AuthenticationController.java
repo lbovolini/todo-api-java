@@ -30,7 +30,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticatedUser);
     }
 
-    @PostMapping("/logout")
+    @PostMapping(value = "/logout", consumes = MediaType.ALL_VALUE)
     public ResponseEntity<?> logout(@RequestParam String username) {
         authenticationService.logout(username);
 
