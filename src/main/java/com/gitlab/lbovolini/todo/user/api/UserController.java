@@ -35,7 +35,7 @@ public class UserController implements CrudController<User> {
      * @return Retorna ResponseEntity com HttpStatus 204.
      */
     @Override
-    @DeleteMapping("{id}")
+    @DeleteMapping(value = "{id}", consumes = MediaType.ALL_VALUE)
     public ResponseEntity<?> delete(@PathVariable String id) {
         userService.delete(id);
 

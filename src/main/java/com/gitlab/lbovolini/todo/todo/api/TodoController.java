@@ -27,7 +27,7 @@ public class TodoController implements CrudController<Todo> {
     }
 
     @Override
-    @DeleteMapping("{id}")
+    @DeleteMapping(value = "{id}", consumes = MediaType.ALL_VALUE)
     public ResponseEntity<?> delete(@PathVariable String id) {
         todoService.delete(id);
 
