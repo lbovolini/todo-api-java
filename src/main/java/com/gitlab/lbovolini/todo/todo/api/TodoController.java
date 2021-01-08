@@ -35,7 +35,7 @@ public class TodoController implements CrudController<Todo> {
     }
 
     @Override
-    @GetMapping("{id}")
+    @GetMapping(value = "{id}", consumes = MediaType.ALL_VALUE)
     public ResponseEntity<Todo> findById(@PathVariable String id) {
         Optional<Todo> todoOptional = todoService.findById(id);
 
@@ -46,7 +46,7 @@ public class TodoController implements CrudController<Todo> {
     }
 
     @Override
-    @GetMapping
+    @GetMapping(consumes = MediaType.ALL_VALUE)
     public ResponseEntity<List<Todo>> findAll() {
         List<Todo> todoList = todoService.findAll();
 

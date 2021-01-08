@@ -48,7 +48,7 @@ public class UserController implements CrudController<User> {
      * @return Retorna ResponseEntity com o usuário e com HttpStatus 200, ou HttpStatus 404 se o usuário com o id informado não for encontrado.
      */
     @Override
-    @GetMapping("{id}")
+    @GetMapping(value = "{id}", consumes = MediaType.ALL_VALUE)
     public ResponseEntity<User> findById(@PathVariable String id) {
 
         Optional<User> userOptional = userService.findById(id);
@@ -64,7 +64,7 @@ public class UserController implements CrudController<User> {
      * @return Retorna ResponseEntity com a lista de todos os usuários e com HttpStatus 200.
      */
     @Override
-    @GetMapping
+    @GetMapping(consumes = MediaType.ALL_VALUE)
     public ResponseEntity<List<User>> findAll() {
         List<User> userList = userService.findAll();
 
