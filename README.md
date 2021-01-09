@@ -1,6 +1,6 @@
 ### Requerimentos
  - Maven
- - JDK 15
+ - JDK 11
  - MongoDB
 
 ### Instruções de Autenticação
