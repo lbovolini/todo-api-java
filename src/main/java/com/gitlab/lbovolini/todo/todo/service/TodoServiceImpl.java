@@ -5,12 +5,14 @@ import com.gitlab.lbovolini.todo.storage.RemoteStorageService;
 import com.gitlab.lbovolini.todo.todo.model.Todo;
 import com.gitlab.lbovolini.todo.todo.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TodoServiceImpl implements TodoService {
@@ -27,6 +29,18 @@ public class TodoServiceImpl implements TodoService {
     @Override
     public void delete(String id) {
         todoRepository.delete(id);
+    }
+
+    @Override
+    public Optional<List<Resource>> downloadAttachments(String id) {
+        return todoRepository.findById(id)
+                .stream()
+                .map(todo ->
+                        todo.getAttachments()
+                                .stream()
+                                .map(attachment -> remoteStorageService.download(todo.getUserId(), attachment.getPath()))
+                                .collect(Collectors.toList()))
+                .findFirst();
     }
 
     @Override

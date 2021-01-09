@@ -4,7 +4,10 @@ import com.gitlab.lbovolini.todo.common.CrudController;
 import com.gitlab.lbovolini.todo.todo.service.TodoService;
 import com.gitlab.lbovolini.todo.todo.model.Todo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,6 +47,23 @@ public class TodoController implements CrudController<Todo> {
                 .map(ResponseEntity::ok)
                 .findFirst()
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping(value = "{id}/download", consumes = MediaType.ALL_VALUE, produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<MultiValueMap<String, Object> > findByIdAndDownload(@PathVariable String id) {
+        Optional<Todo> todoOptional = todoService.findById(id);
+
+        if (todoOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Optional<List<Resource>> fileListOptional = todoService.downloadAttachments(id);
+
+        final MultiValueMap<String, Object> response = new LinkedMultiValueMap<>();
+        todoOptional.ifPresent(todo -> response.add("todo", todo));
+        fileListOptional.ifPresent(files -> response.add("attachments", files.get(0)));
+
+        return ResponseEntity.ok().body(response);
     }
 
     @Override

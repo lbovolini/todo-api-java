@@ -608,7 +608,7 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
-          description: Tarefa com o id informado não encontrada
+          description: Lista de afazeres com o id informado não encontrada
           content:
             application/json:
               schema:
@@ -650,6 +650,48 @@ paths:
                 message: Todo not found
                 path: /todo/api/v1/todos/1
                   
+      security:
+        - todoAuth: [] 
+  '/api/v1/todos/{id}/download':
+    get:
+      tags:
+        - Todo API
+      summary: Realiza a busca da lista de afazeres pelo id informado e dos arquivos anexos
+      operationId: findByIdAndDownload
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+          example: 5ff65c7440deeb6df754110f
+          description: Id da lista de afazeres registrada na base de dados que será pesquisada
+      responses:
+        '200':
+          description: Operação realizada com sucesso
+          content:
+            multipart/form-data:
+              schema:
+                type: string
+              example: |
+                --b9cApmTwe5bSv_C--zXLSQJsEl5aIby1uMAd
+                Content-Disposition: form-data; name="todo"
+                Content-Type: application/json
+                
+                {"id":"5ffa0bbe8981615713a88022","userId":"5ff4a5f993002c22433de9e3","tasks":[{"name":"Teste","description":"Enviar teste","date":"2021-02-04T17:47:25.147613061+00:00"}],"attachments":[{"path":"5ff4a5f993002c22433de9e3/Captura-de-tela-de------.png"}]}
+                --b9cApmTwe5bSv_C--zXLSQJsEl5aIby1uMAd
+                Content-Disposition: form-data; name="attachments"; filename="Captura-de-tela-de------.png"
+                Content-Type: image/png
+                Content-Length: 97206
+                ...
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          description: Lista de afazeres com o id informado não encontrada
+          content:
+            application/json:
+              schema:
+                type: object
       security:
         - todoAuth: [] 
 components:
