@@ -1,0 +1,1137 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "description" : "API de lista de afazeres\n",
+    "version" : "1.0.0",
+    "title" : "Todo list API",
+    "termsOfService" : "http://swagger.io/terms/",
+    "contact" : {
+      "name" : "Lucas Bovolini",
+      "email" : "lbovolini94@gmail.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "servers" : [ {
+    "description" : "localhost",
+    "url" : "http://localhost:8080/todo"
+  } ],
+  "tags" : [ {
+    "name" : "Authentication API",
+    "description" : "API de autenticação de usuário"
+  }, {
+    "name" : "Public User API",
+    "description" : "API de usuário não autenticado"
+  }, {
+    "name" : "User API",
+    "description" : "API de acesso de usuário autenticado"
+  }, {
+    "name" : "Todo API",
+    "description" : "API de acesso de lista de afazeres"
+  } ],
+  "paths" : {
+    "/login" : {
+      "post" : {
+        "tags" : [ "Authentication API" ],
+        "summary" : "Autentica o usuário no sistema",
+        "operationId" : "login",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/UserCredentials"
+              },
+              "example" : {
+                "username" : "lucas",
+                "password" : "pass11word"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Operação realizada com sucesso",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AuthenticatedUser"
+                },
+                "example" : {
+                  "id" : "5ff610e2f6727779c6e6e8b8",
+                  "username" : "user1",
+                  "token" : "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImlhdCI6MTYxMDA0NDUxOSwiZXhwIjoxNjEyNjM2NTE5fQ.5aGFRATklh3KAyWw_5Y_U4eWsZscU0GlxghpbZobX4kBqOwL8xsA_iiPp0RD_V2wXpqN7jJfz_SL-p_ljs5VoQ",
+                  "expiration" : "2021-02-06T15:35:19.799891406-03:00"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Ao menos um campo da credencial não foi informado",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ApiError"
+                },
+                "example" : {
+                  "timestamp" : "2021-01-07T18:39:58.804116714+00:00",
+                  "status" : 400,
+                  "error" : "Bad Request",
+                  "message" : "Method Argument Not Valid",
+                  "path" : "/todo/login",
+                  "errors" : [ {
+                    "field" : "password",
+                    "message" : "must not be blank",
+                    "value" : null
+                  } ]
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "Credencial informada não autorizada",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ApiError"
+                },
+                "example" : {
+                  "timestamp" : "2021-01-07T18:40:56.292179784+00:00",
+                  "status" : 401,
+                  "error" : "Unauthorized",
+                  "message" : "Invalid username and/or password",
+                  "path" : "/todo/login"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/logout" : {
+      "post" : {
+        "tags" : [ "Authentication API" ],
+        "summary" : "Remove a autenticação do usuário no sistema",
+        "operationId" : "logout",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "username",
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "lucas",
+          "required" : true,
+          "description" : "Nome de usuário"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Operação realizada com sucesso",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                },
+                "example" : { }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Nome de usuário não informado",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ApiError"
+                },
+                "example" : {
+                  "timestamp" : "2021-01-07T19:29:34.210238119+00:00",
+                  "status" : 400,
+                  "error" : "Bad Request",
+                  "message" : "Required String parameter 'username' is not present",
+                  "path" : "/todo/logout"
+                }
+              }
+            }
+          },
+          "401" : {
+            "$ref" : "#/components/responses/Unauthorized"
+          },
+          "404" : {
+            "description" : "Usuário com nome de usuário informado não encontrado",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ApiError"
+                },
+                "example" : {
+                  "timestamp" : "2021-01-07T19:51:29.700252263+00:00",
+                  "status" : 404,
+                  "error" : "Not Found",
+                  "message" : "Username not found",
+                  "path" : "/todo/logout"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "todoAuth" : [ ]
+        } ]
+      }
+    },
+    "/api/v1/users" : {
+      "get" : {
+        "tags" : [ "User API" ],
+        "summary" : "Realiza a busca por todos os usuários registrados na base de dados",
+        "operationId" : "findAll",
+        "responses" : {
+          "200" : {
+            "description" : "Operação realizada com sucesso",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/User"
+                  }
+                },
+                "example" : [ {
+                  "id" : "5fecae92fc4878605c5c7a5b",
+                  "username" : "lucas"
+                }, {
+                  "id" : "5fee1986d0de6a57c6c628b2",
+                  "username" : "lbovolini"
+                }, {
+                  "id" : "5fee198fd0de6a57c6c628b3",
+                  "username" : "bovolini"
+                } ]
+              }
+            }
+          },
+          "401" : {
+            "$ref" : "#/components/responses/Unauthorized"
+          }
+        },
+        "security" : [ {
+          "todoAuth" : [ ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "User API" ],
+        "summary" : "Atualiza todos os atributos do usuário na base de dados",
+        "operationId" : "update",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/User"
+              },
+              "example" : {
+                "id" : "5ff46c3c9ad0cb476eff6a5d",
+                "username" : "lucas",
+                "password" : "lucas1123"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Operação realizada com sucesso",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                },
+                "example" : {
+                  "id" : "5ff46c3c9ad0cb476eff6a5d",
+                  "username" : "lucas"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Argumento inválido",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ApiError"
+                },
+                "example" : {
+                  "timestamp" : "2021-01-07T17:07:21.817070849+00:00",
+                  "status" : 400,
+                  "error" : "Bad Request",
+                  "message" : "Method Argument Not Valid",
+                  "path" : "/todo/api/v1/users/",
+                  "errors" : [ {
+                    "field" : "password",
+                    "message" : "must not be blank",
+                    "value" : null
+                  } ]
+                }
+              }
+            }
+          },
+          "401" : {
+            "$ref" : "#/components/responses/Unauthorized"
+          },
+          "404" : {
+            "description" : "Usuário não encontrado",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "todoAuth" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "User API" ],
+        "summary" : "Salva o usuário na base de dados",
+        "operationId" : "save",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/User"
+              },
+              "example" : {
+                "username" : "lucas",
+                "password" : "lucas1123"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Operação realizada com sucesso",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                },
+                "example" : {
+                  "id" : "5ff742ba4722e0108945a837",
+                  "username" : "lbovolini"
+                }
+              }
+            }
+          },
+          "401" : {
+            "$ref" : "#/components/responses/Unauthorized"
+          },
+          "409" : {
+            "description" : "A base de dados já possui um usuário com pelo menos um dos campos únicos informados",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ApiError"
+                },
+                "example" : {
+                  "timestamp" : "2021-01-07T17:19:10.474787777+00:00",
+                  "status" : 409,
+                  "error" : "Conflict",
+                  "message" : "Duplicate Key",
+                  "path" : "/todo/api/v1/users/",
+                  "errors" : [ {
+                    "field" : "username",
+                    "message" : "Duplicate Key",
+                    "value" : "lucas"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "todoAuth" : [ ]
+        } ]
+      }
+    },
+    "/api/v1/todos" : {
+      "get" : {
+        "tags" : [ "Todo API" ],
+        "summary" : "Realiza a busca por todas as listas de afazeres registradas na base de dados",
+        "operationId" : "findAll_1",
+        "responses" : {
+          "200" : {
+            "description" : "Operação realizada com sucesso",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Todo"
+                  }
+                },
+                "example" : [ {
+                  "id" : "5ff65c7440deeb6df754110f",
+                  "userId" : "5ff4a5f993002c22433de9e3",
+                  "tasks" : [ {
+                    "name" : "Teste",
+                    "description" : "Enviar teste",
+                    "date" : "2021-02-04T17:47:25.147613061+00:00"
+                  } ]
+                }, {
+                  "id" : "5ff65d7ffd61302ba09ab94f",
+                  "userId" : "5ff4a5f993002c22433de9e3",
+                  "tasks" : [ {
+                    "name" : "Teste 1",
+                    "description" : "Terminar teste Code Fiction 1",
+                    "date" : "2021-02-04T17:47:25.147613061+00:00"
+                  } ],
+                  "attachments" : [ {
+                    "path" : "5ff4a5f993002c22433de9e3/Teste-Pratico-Desenvolvedor-FullStack-.pdf"
+                  } ]
+                }, {
+                  "id" : "5ff65d84fd61302ba09ab950",
+                  "userId" : "5ff4a5f993002c22433de9e3",
+                  "tasks" : [ {
+                    "name" : "Teste 1",
+                    "description" : "Terminar teste Code Fiction 1",
+                    "date" : "2021-02-04T17:47:25.147613061+00:00"
+                  } ],
+                  "attachments" : [ {
+                    "path" : "5ff4a5f993002c22433de9e3/Teste-Pratico-Desenvolvedor-FullStack-.pdf"
+                  } ]
+                } ]
+              }
+            }
+          },
+          "401" : {
+            "$ref" : "#/components/responses/Unauthorized"
+          }
+        },
+        "security" : [ {
+          "todoAuth" : [ ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "Todo API" ],
+        "summary" : "Atualiza a lista de afazeres na base de dados",
+        "operationId" : "update_1",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Todo"
+              },
+              "example" : {
+                "id" : "5ff65c7440deeb6df754110f",
+                "userId" : "5ff4a5f993002c22433de9e3",
+                "tasks" : [ {
+                  "name" : "Teste",
+                  "description" : "Enviar teste",
+                  "date" : "2021-02-04T17:47:25.147613061+00:00"
+                } ]
+              }
+            },
+            "multipart/form-data" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "todo" : {
+                    "allOf" : [ {
+                      "$ref" : "#/components/schemas/Todo"
+                    } ],
+                    "example" : {
+                      "id" : "5ff65c7440deeb6df754110f",
+                      "userId" : "5ff4a5f993002c22433de9e3",
+                      "tasks" : [ {
+                        "name" : "Teste",
+                        "description" : "Enviar teste",
+                        "date" : "2021-02-04T17:47:25.147613061+00:00"
+                      } ]
+                    }
+                  },
+                  "attachment" : {
+                    "type" : "string",
+                    "format" : "binary"
+                  }
+                },
+                "required" : [ "todo" ]
+              },
+              "encoding" : {
+                "todo" : {
+                  "contentType" : "application/json"
+                }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Operação realizada com sucesso",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Todo"
+                },
+                "example" : {
+                  "id" : "5ff65c7440deeb6df754110f",
+                  "userId" : "5ff4a5f993002c22433de9e3",
+                  "tasks" : [ {
+                    "name" : "Teste",
+                    "description" : "Enviar teste",
+                    "date" : "2021-02-04T17:47:25.147613061+00:00"
+                  } ]
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Campo obrigatório não informado",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ApiError"
+                },
+                "example" : {
+                  "timestamp" : "2021-01-07T18:20:58.611211043+00:00",
+                  "status" : 400,
+                  "error" : "Bad Request",
+                  "message" : "Method Argument Not Valid",
+                  "path" : "/todo/api/v1/todos",
+                  "errors" : [ {
+                    "field" : "userId",
+                    "message" : "must not be blank",
+                    "value" : null
+                  } ]
+                }
+              }
+            }
+          },
+          "401" : {
+            "$ref" : "#/components/responses/Unauthorized"
+          },
+          "404" : {
+            "description" : "Lista de afazeres com o id informado não encontrada",
+            "content" : {
+              "application/json" : {
+                "example" : { }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "todoAuth" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "Todo API" ],
+        "summary" : "Salva a lista de afazeres na base de dados",
+        "operationId" : "save_todo",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Todo"
+              },
+              "example" : {
+                "userId" : "5ff4a5f993002c22433de9e3",
+                "tasks" : [ {
+                  "name" : "Teste",
+                  "description" : "Enviar teste",
+                  "date" : "2021-02-04T17:47:25.147613061+00:00"
+                } ]
+              }
+            },
+            "multipart/form-data" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "todo" : {
+                    "allOf" : [ {
+                      "$ref" : "#/components/schemas/Todo"
+                    } ],
+                    "example" : {
+                      "userId" : "5ff4a5f993002c22433de9e3",
+                      "tasks" : [ {
+                        "name" : "Teste",
+                        "description" : "Enviar teste",
+                        "date" : "2021-02-04T17:47:25.147613061+00:00"
+                      } ]
+                    }
+                  },
+                  "attachment" : {
+                    "type" : "string",
+                    "format" : "binary"
+                  }
+                },
+                "required" : [ "todo" ]
+              },
+              "encoding" : {
+                "todo" : {
+                  "contentType" : "application/json"
+                }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Operação realizada com sucesso",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Todo"
+                },
+                "example" : {
+                  "id" : "5ff74515d74e4d7d1c709c2b",
+                  "userId" : "5ff4a5f993002c22433de9e3",
+                  "tasks" : [ {
+                    "name" : "Teste",
+                    "description" : "Enviar teste",
+                    "date" : "2021-02-04T17:47:25.147613061+00:00"
+                  } ]
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Campo obrigatório não informado",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ApiError"
+                },
+                "example" : {
+                  "timestamp" : "2021-01-07T18:13:26.211841762+00:00",
+                  "status" : 400,
+                  "error" : "Bad Request",
+                  "message" : "Method Argument Not Valid",
+                  "path" : "/todo/api/v1/todos",
+                  "errors" : [ {
+                    "field" : "userId",
+                    "message" : "must not be blank",
+                    "value" : null
+                  } ]
+                }
+              }
+            }
+          },
+          "401" : {
+            "$ref" : "#/components/responses/Unauthorized"
+          }
+        },
+        "security" : [ {
+          "todoAuth" : [ ]
+        } ]
+      }
+    },
+    "/register" : {
+      "post" : {
+        "tags" : [ "Public User API" ],
+        "summary" : "Salva o usuário na base de dados",
+        "operationId" : "register",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/User"
+              },
+              "example" : {
+                "username" : "lucas",
+                "password" : "lucas1123"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Operação realizada com sucesso",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                },
+                "example" : {
+                  "id" : "5ff742ba4722e0108945a837",
+                  "username" : "lbovolini"
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "A base de dados já possui um usuário com pelo menos um dos campos únicos informados",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ApiError"
+                },
+                "example" : {
+                  "timestamp" : "2020-12-31T20:51:51.061+00:00",
+                  "status" : 409,
+                  "error" : "Conflict",
+                  "message" : "Duplicate Key Exception",
+                  "path" : "/todo/public/users/register",
+                  "errors" : [ {
+                    "field" : "username",
+                    "message" : "Duplicate Key",
+                    "value" : "lucas"
+                  } ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/{id}" : {
+      "get" : {
+        "tags" : [ "User API" ],
+        "summary" : "Realiza a busca do usuário pelo id informado",
+        "operationId" : "findById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "5ff46c3c9ad0cb476eff6a5d",
+          "description" : "Id do usuário registrado na base de dados que será pesquisado"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operação realizada com sucesso",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                },
+                "example" : {
+                  "id" : "5fecae92fc4878605c5c7a5b",
+                  "username" : "lucas"
+                }
+              }
+            }
+          },
+          "401" : {
+            "$ref" : "#/components/responses/Unauthorized"
+          },
+          "404" : {
+            "description" : "Usuário com o id informado não encontrado",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "todoAuth" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "User API" ],
+        "summary" : "Remove o usuário com o id informado",
+        "operationId" : "delete",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "5ff46c3c9ad0cb476eff6a5d",
+          "description" : "Id do usuário registrado na base de dados que será removido"
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Usuário removido com sucesso",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          },
+          "401" : {
+            "$ref" : "#/components/responses/Unauthorized"
+          },
+          "404" : {
+            "description" : "Usuário não encontrado",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ApiError"
+                },
+                "example" : {
+                  "timestamp" : "2021-01-07T21:22:46.433726467+00:00",
+                  "status" : 404,
+                  "error" : "Not Found",
+                  "message" : "User not found",
+                  "path" : "/todo/api/v1/users/11"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "todoAuth" : [ ]
+        } ]
+      }
+    },
+    "/api/v1/todos/{id}" : {
+      "get" : {
+        "tags" : [ "Todo API" ],
+        "summary" : "Realiza a busca da lista de afazeres pelo id informado",
+        "operationId" : "findById_1",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "5ff65c7440deeb6df754110f",
+          "description" : "Id da lista de afazeres registrada na base de dados que será pesquisada"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Operação realizada com sucesso",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Todo"
+                },
+                "example" : {
+                  "id" : "5ff65c7440deeb6df754110f",
+                  "userId" : "5ff4a5f993002c22433de9e3",
+                  "tasks" : [ {
+                    "name" : "Teste",
+                    "description" : "Enviar teste",
+                    "date" : "2021-02-04T17:47:25.147613061+00:00"
+                  } ]
+                }
+              }
+            }
+          },
+          "401" : {
+            "$ref" : "#/components/responses/Unauthorized"
+          },
+          "404" : {
+            "description" : "Tarefa com o id informado não encontrada",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "todoAuth" : [ ]
+        } ]
+      },
+      "delete" : {
+        "tags" : [ "Todo API" ],
+        "summary" : "Remove a lista de afazeres correspondente ao id informado",
+        "operationId" : "delete_1",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "5ff65c7440deeb6df754110f",
+          "description" : "Id da lista de afazeres registrada na base de dados que será removida"
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Lista de afazeres removida com sucesso",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          },
+          "401" : {
+            "$ref" : "#/components/responses/Unauthorized"
+          },
+          "404" : {
+            "description" : "Lista de afazeres com o id informado não encontrada",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ApiError"
+                },
+                "example" : {
+                  "timestamp" : "2021-01-06T22:25:52.641697330+00:00",
+                  "status" : 404,
+                  "error" : "Not Found",
+                  "message" : "Todo not found",
+                  "path" : "/todo/api/v1/todos/1"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "todoAuth" : [ ]
+        } ]
+      }
+    }
+  },
+  "components" : {
+    "responses" : {
+      "Unauthorized" : {
+        "description" : "Usuário não autorizado",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/ApiError"
+            },
+            "example" : {
+              "timestamp" : "2020-12-31T17:31:04.518+00:00",
+              "status" : 401,
+              "error" : "Unauthorized",
+              "message" : "Invalid token",
+              "path" : "..."
+            }
+          }
+        }
+      }
+    },
+    "schemas" : {
+      "User" : {
+        "description" : "Usuário do sistema",
+        "required" : [ "username", "password" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "description" : "Identificador único",
+            "type" : "string"
+          },
+          "username" : {
+            "description" : "Nome de usuário. Deve conter no mínimo 3 caracteres e no máximo 20, sendo estes letras ou números",
+            "pattern" : "^(\\w){3,20}\\b",
+            "type" : "string"
+          },
+          "password" : {
+            "description" : "Senha. Deve conter no mínimo 8 caracteres, com no mínimo 1 letra e 1 número",
+            "pattern" : "^(?=.*[\\d])(?=.*[a-z])[\\w!@#$%^&*()-=+,.;:]{8,}$",
+            "type" : "string",
+            "writeOnly" : true
+          },
+          "authorities" : {
+            "description" : "Lista de permissões do usuário",
+            "type" : "array",
+            "items" : {
+              "type" : "object"
+            },
+            "readOnly" : true,
+            "writeOnly" : true
+          },
+          "accountNonLocked" : {
+            "description" : "Indica se a conta do usuário está bloqueada ou não. A conta é sempre bloqueada a cada logout e desbloqueada a cada login",
+            "type" : "boolean",
+            "readOnly" : true,
+            "writeOnly" : true
+          }
+        }
+      },
+      "AuthenticatedUser" : {
+        "required" : [ "id", "username", "token", "expiration" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "description" : "Identificador único do usuário",
+            "type" : "string"
+          },
+          "username" : {
+            "description" : "Nome de usuário",
+            "type" : "string"
+          },
+          "token" : {
+            "description" : "Chave de autenticação do usuário que deve ser enviada no cabeçalho da requisição (Authorization) a cada requisição de acesso à rotas que necessitem de autenticação",
+            "type" : "string"
+          },
+          "expiration" : {
+            "description" : "Data de expiração da chave de autenticação",
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      },
+      "UserCredentials" : {
+        "required" : [ "password", "username" ],
+        "type" : "object",
+        "properties" : {
+          "username" : {
+            "description" : "Nome de usuário",
+            "type" : "string"
+          },
+          "password" : {
+            "description" : "Senha",
+            "type" : "string",
+            "writeOnly" : true
+          }
+        }
+      },
+      "Todo" : {
+        "required" : [ "userId" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "description" : "Identificador único",
+            "type" : "string"
+          },
+          "userId" : {
+            "description" : "Identificador único do usuário a quem pertence esta lista de afazeres",
+            "type" : "string"
+          },
+          "tasks" : {
+            "description" : "Lista de tarefas",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Task"
+            }
+          },
+          "attachments" : {
+            "description" : "Lista de anexos",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Attachment"
+            }
+          }
+        }
+      },
+      "Task" : {
+        "required" : [ "date", "description", "name" ],
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "description" : "Nome",
+            "type" : "string"
+          },
+          "description" : {
+            "description" : "Descrição",
+            "type" : "string"
+          },
+          "date" : {
+            "description" : "Data",
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      },
+      "Attachment" : {
+        "required" : [ "path" ],
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "description" : "Nome do arquivo",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "path" : {
+            "description" : "Caminho não absoluto do arquivo",
+            "type" : "string"
+          },
+          "type" : {
+            "description" : "Tipo do arquivo",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "extension" : {
+            "description" : "Extensão do arquivo",
+            "type" : "string",
+            "readOnly" : true
+          },
+          "size" : {
+            "description" : "Tamanho do arquivo",
+            "type" : "integer",
+            "format" : "int64",
+            "readOnly" : true
+          }
+        }
+      },
+      "ApiError" : {
+        "required" : [ "timestamp", "status", "error", "message", "path" ],
+        "type" : "object",
+        "properties" : {
+          "timestamp" : {
+            "description" : "Momento em que ocorreu o erro",
+            "type" : "string"
+          },
+          "status" : {
+            "description" : "Status HTTP do erro",
+            "type" : "integer"
+          },
+          "error" : {
+            "description" : "Mensagem de erro do status HTTP",
+            "type" : "string"
+          },
+          "message" : {
+            "description" : "Mensagem de erro lançada pela exceção, ou mensagem personalizada",
+            "type" : "string"
+          },
+          "path" : {
+            "description" : "Caminho relativo do endpoint da solicitação em que ocorreu o erro",
+            "type" : "string"
+          },
+          "errors" : {
+            "description" : "Lista de erros",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Error" : {
+        "required" : [ "field", "message", "value" ],
+        "type" : "object",
+        "properties" : {
+          "field" : {
+            "description" : "Nome do campo em que ocorreu o erro",
+            "type" : "string"
+          },
+          "message" : {
+            "description" : "Mensagem de erro",
+            "type" : "string"
+          },
+          "value" : {
+            "description" : "Valor informado que gerou o erro",
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "todoAuth" : {
+        "type" : "http",
+        "scheme" : "bearer",
+        "bearerFormat" : "JWT"
+      }
+    }
+  }
+}
