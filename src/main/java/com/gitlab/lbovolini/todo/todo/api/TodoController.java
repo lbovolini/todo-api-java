@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -62,8 +63,10 @@ public class TodoController implements CrudController<Todo> {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Todo> save(@Valid @RequestPart Todo todo, @RequestParam MultipartFile attachment) {
-        Todo savedTodo = todoService.save(todo, attachment);
+    public ResponseEntity<Todo> save(@Valid @RequestPart Todo todo, @RequestParam(required = false) MultipartFile attachment) {
+        Todo savedTodo = Objects.nonNull(attachment)
+                ? todoService.save(todo, attachment)
+                : todoService.save(todo);
 
         return ResponseEntity.ok(savedTodo);
     }
@@ -80,8 +83,10 @@ public class TodoController implements CrudController<Todo> {
     }
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Todo> update(@Valid @RequestPart Todo todo, @RequestParam MultipartFile attachment) {
-        Optional<Todo> todoOptional = todoService.update(todo, attachment);
+    public ResponseEntity<Todo> update(@Valid @RequestPart Todo todo, @RequestParam(required = false) MultipartFile attachment) {
+        Optional<Todo> todoOptional = Objects.nonNull(attachment)
+                ? todoService.update(todo, attachment)
+                : todoService.update(todo);
 
         return todoOptional.stream()
                 .map(ResponseEntity::ok)
