@@ -1,5 +1,6 @@
 package com.gitlab.lbovolini.todo.todo.repository;
 
+import com.gitlab.lbovolini.todo.common.exception.ForbiddenException;
 import com.gitlab.lbovolini.todo.common.exception.NotFoundException;
 import com.gitlab.lbovolini.todo.todo.model.Todo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +24,19 @@ public class CustomTodoRepositoryImpl implements CustomTodoRepository {
 
     @Override
     public void delete(String id, String loggedUserId) {
-        Query removeUserQuery = Query.query(Criteria.where("id").is(id).and("userId").is(loggedUserId));
-
-        Todo todo = mongoTemplate.findAndRemove(removeUserQuery, Todo.class);
+        Query findTodoQuery = Query.query(Criteria.where("id").is(id));
+        Todo todo = mongoTemplate.findOne(findTodoQuery, Todo.class);
 
         if (Objects.isNull(todo)) {
             throw new NotFoundException("Todo not found");
         }
+
+        if (!todo.getUserId().equals(loggedUserId)) {
+            throw new ForbiddenException("You cannot delete another user");
+        }
+
+        Query removeUserQuery = Query.query(Criteria.where("id").is(id));
+        mongoTemplate.remove(removeUserQuery, Todo.class);
     }
 
     @Override

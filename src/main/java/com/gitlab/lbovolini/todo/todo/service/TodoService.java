@@ -10,6 +10,8 @@ import java.util.Optional;
 
 public interface TodoService extends CrudService<Todo> {
 
+    void delete(String id, String loggedUserId);
+
     Optional<List<Resource>> downloadAttachments(String id);
 
     Todo save(Todo todo, MultipartFile multipartFile);

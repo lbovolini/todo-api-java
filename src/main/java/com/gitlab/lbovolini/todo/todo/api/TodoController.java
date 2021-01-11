@@ -1,11 +1,13 @@
 package com.gitlab.lbovolini.todo.todo.api;
 
 import com.gitlab.lbovolini.todo.common.CrudController;
+import com.gitlab.lbovolini.todo.common.model.User;
 import com.gitlab.lbovolini.todo.todo.service.TodoService;
 import com.gitlab.lbovolini.todo.todo.model.Todo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
@@ -30,12 +32,16 @@ public class TodoController implements CrudController<Todo> {
         this.todoService = todoService;
     }
 
-    @Override
     @DeleteMapping(value = "{id}", consumes = MediaType.ALL_VALUE)
-    public ResponseEntity<?> delete(@PathVariable String id) {
-        todoService.delete(id);
+    public ResponseEntity<?> delete(@PathVariable String id, @AuthenticationPrincipal User user) {
+        todoService.delete(id, user.getId());
 
         return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<?> delete(String id) {
+        throw new UnsupportedOperationException();
     }
 
     @Override

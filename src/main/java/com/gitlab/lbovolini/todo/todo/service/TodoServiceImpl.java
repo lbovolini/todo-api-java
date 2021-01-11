@@ -1,6 +1,5 @@
 package com.gitlab.lbovolini.todo.todo.service;
 
-import com.gitlab.lbovolini.todo.common.model.User;
 import com.gitlab.lbovolini.todo.todo.model.Attachment;
 import com.gitlab.lbovolini.todo.storage.RemoteStorageService;
 import com.gitlab.lbovolini.todo.todo.model.Todo;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,9 +30,11 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public void delete(String id) {
-        String loggedUserId = ((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+        throw new UnsupportedOperationException();
+    }
 
-        todoRepository.delete(id, loggedUserId);
+    public void delete(String id, String loggedUserid) {
+        todoRepository.delete(id, loggedUserid);
     }
 
     @Override
