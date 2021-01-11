@@ -41,10 +41,10 @@ class TodoServiceImplUnitTest {
 
     @Test
     void shouldDeleteTodoById() {
-        doNothing().when(todoRepository).delete(id);
-        todoService.delete(id);
+        doNothing().when(todoRepository).delete(id, userId);
+        todoService.delete(id, userId);
 
-        verify(todoRepository, times(1)).delete(id);
+        verify(todoRepository, times(1)).delete(id, userId);
     }
 
     @Test
