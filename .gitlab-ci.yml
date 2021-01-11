@@ -1,0 +1,24 @@
+image: maven:3-openjdk-11-slim
+
+stages:
+  - build
+  - test
+  - package
+  
+ build:
+   stage: build
+   script:
+     - mvn compile
+     
+test:
+  stage: test
+  script:
+    - mvn test
+    
+package:
+  stage: package
+  script:
+    - mvn -DskipTests=true package
+  artifacts:
+    paths:
+      - target/todo-list-*.jar
