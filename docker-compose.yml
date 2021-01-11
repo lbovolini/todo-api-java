@@ -10,6 +10,8 @@ services:
     ports:
       - 27017:27017
     network_mode: host
+    volumes:
+      - $HOME/mongo:/data/db
     healthcheck:
       test: "exit 0"
   api:
