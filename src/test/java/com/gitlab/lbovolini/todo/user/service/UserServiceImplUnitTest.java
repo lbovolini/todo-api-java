@@ -42,14 +42,6 @@ class UserServiceImplUnitTest {
     }
 
     @Test
-    void shouldFindAllUsers() {
-        when(userRepository.findAll()).thenReturn(List.of());
-        List<User> userList = userService.findAll();
-
-        assertEquals(List.of(), userList);
-    }
-
-    @Test
     void shouldFindUserById() {
         when(userRepository.findById(id)).thenReturn(Optional.of(userWithHashedPassword));
         Optional<User> userOptional = userService.findById(id);

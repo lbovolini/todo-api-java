@@ -66,15 +66,6 @@ public class TodoController implements CrudController<Todo> {
         return ResponseEntity.ok().body(response);
     }
 
-    @Override
-    @GetMapping(consumes = MediaType.ALL_VALUE)
-    public ResponseEntity<List<Todo>> findAll() {
-        List<Todo> todoList = todoService.findAll();
-
-        return ResponseEntity.ok(todoList);
-    }
-
-    @Override
     @PostMapping
     public ResponseEntity<Todo> save(@Valid @RequestBody Todo todo) {
         Todo savedTodo = todoService.save(todo);

@@ -1,5 +1,6 @@
 package com.gitlab.lbovolini.todo.todo.service;
 
+import com.gitlab.lbovolini.todo.common.model.User;
 import com.gitlab.lbovolini.todo.todo.model.Attachment;
 import com.gitlab.lbovolini.todo.todo.model.Task;
 import com.gitlab.lbovolini.todo.todo.model.Todo;
@@ -44,14 +45,6 @@ class TodoServiceImplUnitTest {
         todoService.delete(id);
 
         verify(todoRepository, times(1)).delete(id);
-    }
-
-    @Test
-    void shouldFindAllTodos() {
-        when(todoRepository.findAll()).thenReturn(List.of());
-        List<Todo> todoList = todoService.findAll();
-
-        assertEquals(List.of(), todoList);
     }
 
     @Test

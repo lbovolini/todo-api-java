@@ -1,7 +1,7 @@
 package com.gitlab.lbovolini.todo.user.api;
 
 import com.gitlab.lbovolini.todo.common.CrudController;
-import com.gitlab.lbovolini.todo.user.service.UserServiceImpl;
+import com.gitlab.lbovolini.todo.user.service.UserService;
 import com.gitlab.lbovolini.todo.common.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -22,10 +21,10 @@ import java.util.Optional;
         produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController implements CrudController<User> {
 
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
     @Autowired
-    public UserController(UserServiceImpl userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -57,18 +56,6 @@ public class UserController implements CrudController<User> {
                 .map(ResponseEntity::ok)
                 .findFirst()
                 .orElse(ResponseEntity.notFound().build());
-    }
-
-    /**
-     * Realiza a busca de todos os usuários.
-     * @return Retorna ResponseEntity com a lista de todos os usuários e com HttpStatus 200.
-     */
-    @Override
-    @GetMapping(consumes = MediaType.ALL_VALUE)
-    public ResponseEntity<List<User>> findAll() {
-        List<User> userList = userService.findAll();
-
-        return ResponseEntity.ok(userList);
     }
 
     /**

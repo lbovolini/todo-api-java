@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface CustomTodoRepository {
 
-    void delete(String id);
+    void delete(String id, String loggedUserId);
 
     Optional<Todo> update(Todo todo);
 }

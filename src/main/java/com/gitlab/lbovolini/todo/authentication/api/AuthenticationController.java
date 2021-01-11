@@ -1,7 +1,7 @@
 package com.gitlab.lbovolini.todo.authentication.api;
 
 import com.gitlab.lbovolini.todo.authentication.AuthenticatedUser;
-import com.gitlab.lbovolini.todo.authentication.service.AuthenticationServiceImpl;
+import com.gitlab.lbovolini.todo.authentication.service.AuthenticationService;
 import com.gitlab.lbovolini.todo.authentication.UserCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -16,10 +16,10 @@ import javax.validation.Valid;
         produces = MediaType.APPLICATION_JSON_VALUE)
 public class AuthenticationController {
 
-    private final AuthenticationServiceImpl authenticationService;
+    private final AuthenticationService authenticationService;
 
     @Autowired
-    public AuthenticationController(AuthenticationServiceImpl authenticationService) {
+    public AuthenticationController(AuthenticationService authenticationService) {
         this.authenticationService = authenticationService;
     }
 

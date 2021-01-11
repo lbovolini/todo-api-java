@@ -8,6 +8,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -53,6 +54,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
      * @param username
      */
     @Override
+    @PreAuthorize("#username == authentication.principal.username")
     public void logout(String username) {
         authenticationRepository.lockAccount(username);
     }

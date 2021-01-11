@@ -1,11 +1,15 @@
 package com.gitlab.lbovolini.todo.todo.service;
 
+import com.gitlab.lbovolini.todo.common.model.User;
 import com.gitlab.lbovolini.todo.todo.model.Attachment;
 import com.gitlab.lbovolini.todo.storage.RemoteStorageService;
 import com.gitlab.lbovolini.todo.todo.model.Todo;
 import com.gitlab.lbovolini.todo.todo.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,7 +32,9 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public void delete(String id) {
-        todoRepository.delete(id);
+        String loggedUserId = ((User)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+
+        todoRepository.delete(id, loggedUserId);
     }
 
     @Override
@@ -44,21 +50,19 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public List<Todo> findAll() {
-        return todoRepository.findAll();
-    }
-
-    @Override
+    @PostAuthorize("isOwnerById(returnObject.userId)")
     public Optional<Todo> findById(String id) {
         return todoRepository.findById(id);
     }
 
     @Override
+    @PreAuthorize("isOwnerById(#todo.userId)")
     public Todo save(Todo todo) {
         return todoRepository.save(todo);
     }
 
     @Override
+    @PreAuthorize("isOwnerById(#todo.userId)")
     public Todo save(Todo todo, MultipartFile multipartFile) {
 
         try {
@@ -78,11 +82,13 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
+    @PreAuthorize("isOwnerById(#todo.userId)")
     public Optional<Todo> update(Todo todo) {
         return todoRepository.update(todo);
     }
 
     @Override
+    @PreAuthorize("isOwnerById(#todo.userId)")
     public Optional<Todo> update(Todo todo, MultipartFile multipartFile) {
         try {
             File file = convertToFile(multipartFile);

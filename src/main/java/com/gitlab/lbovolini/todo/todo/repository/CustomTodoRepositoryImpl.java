@@ -22,8 +22,8 @@ public class CustomTodoRepositoryImpl implements CustomTodoRepository {
     }
 
     @Override
-    public void delete(String id) {
-        Query removeUserQuery = Query.query(Criteria.where("id").is(id));
+    public void delete(String id, String loggedUserId) {
+        Query removeUserQuery = Query.query(Criteria.where("id").is(id).and("userId").is(loggedUserId));
 
         Todo todo = mongoTemplate.findAndRemove(removeUserQuery, Todo.class);
 

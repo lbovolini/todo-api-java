@@ -51,6 +51,7 @@ public class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticati
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(claims.getSubject(), token,
                 authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
 
+
         // !todo checar somente uma vez
         return this.createSuccessAuthentication(username, authentication, retrieveUser(username, authenticationToken));
     }
@@ -64,6 +65,5 @@ public class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticati
                 .orElseThrow(() -> new AuthenticationServiceException("Cannot find username"))
                 .filter(User::isAccountNonLocked)
                 .orElseThrow(() -> new AuthenticationServiceException("User is locked, authenticate again to unlock"));
-        //return new User(username, (String)authenticationToken.getCredentials(), authenticationToken.getAuthorities());
     }
 }

@@ -15,6 +15,9 @@
     }
   },
   "servers" : [ {
+    "description" : "SwaggerHub API Auto Mocking",
+    "url" : "https://virtserver.swaggerhub.com/lbovolini/Todo/1.0.0"
+  }, {
     "description" : "localhost",
     "url" : "http://localhost:8080/todo"
   } ],
@@ -166,6 +169,9 @@
           "401" : {
             "$ref" : "#/components/responses/Unauthorized"
           },
+          "403" : {
+            "$ref" : "#/components/responses/Forbidden"
+          },
           "404" : {
             "description" : "Usuário com nome de usuário informado não encontrado",
             "content" : {
@@ -190,42 +196,6 @@
       }
     },
     "/api/v1/users" : {
-      "get" : {
-        "tags" : [ "User API" ],
-        "summary" : "Realiza a busca por todos os usuários registrados na base de dados",
-        "operationId" : "findAll",
-        "responses" : {
-          "200" : {
-            "description" : "Operação realizada com sucesso",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/User"
-                  }
-                },
-                "example" : [ {
-                  "id" : "5fecae92fc4878605c5c7a5b",
-                  "username" : "lucas"
-                }, {
-                  "id" : "5fee1986d0de6a57c6c628b2",
-                  "username" : "lbovolini"
-                }, {
-                  "id" : "5fee198fd0de6a57c6c628b3",
-                  "username" : "bovolini"
-                } ]
-              }
-            }
-          },
-          "401" : {
-            "$ref" : "#/components/responses/Unauthorized"
-          }
-        },
-        "security" : [ {
-          "todoAuth" : [ ]
-        } ]
-      },
       "put" : {
         "tags" : [ "User API" ],
         "summary" : "Atualiza todos os atributos do usuário na base de dados",
@@ -285,6 +255,9 @@
           "401" : {
             "$ref" : "#/components/responses/Unauthorized"
           },
+          "403" : {
+            "$ref" : "#/components/responses/Forbidden"
+          },
           "404" : {
             "description" : "Usuário não encontrado",
             "content" : {
@@ -336,6 +309,9 @@
           "401" : {
             "$ref" : "#/components/responses/Unauthorized"
           },
+          "403" : {
+            "$ref" : "#/components/responses/Forbidden"
+          },
           "409" : {
             "description" : "A base de dados já possui um usuário com pelo menos um dos campos únicos informados",
             "content" : {
@@ -365,63 +341,6 @@
       }
     },
     "/api/v1/todos" : {
-      "get" : {
-        "tags" : [ "Todo API" ],
-        "summary" : "Realiza a busca por todas as listas de afazeres registradas na base de dados",
-        "operationId" : "findAll_1",
-        "responses" : {
-          "200" : {
-            "description" : "Operação realizada com sucesso",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/Todo"
-                  }
-                },
-                "example" : [ {
-                  "id" : "5ff65c7440deeb6df754110f",
-                  "userId" : "5ff4a5f993002c22433de9e3",
-                  "tasks" : [ {
-                    "name" : "Teste",
-                    "description" : "Enviar teste",
-                    "date" : "2021-02-04T17:47:25.147613061+00:00"
-                  } ]
-                }, {
-                  "id" : "5ff65d7ffd61302ba09ab94f",
-                  "userId" : "5ff4a5f993002c22433de9e3",
-                  "tasks" : [ {
-                    "name" : "Teste 1",
-                    "description" : "Terminar teste Code Fiction 1",
-                    "date" : "2021-02-04T17:47:25.147613061+00:00"
-                  } ],
-                  "attachments" : [ {
-                    "path" : "5ff4a5f993002c22433de9e3/Teste-Pratico-Desenvolvedor-FullStack-.pdf"
-                  } ]
-                }, {
-                  "id" : "5ff65d84fd61302ba09ab950",
-                  "userId" : "5ff4a5f993002c22433de9e3",
-                  "tasks" : [ {
-                    "name" : "Teste 1",
-                    "description" : "Terminar teste Code Fiction 1",
-                    "date" : "2021-02-04T17:47:25.147613061+00:00"
-                  } ],
-                  "attachments" : [ {
-                    "path" : "5ff4a5f993002c22433de9e3/Teste-Pratico-Desenvolvedor-FullStack-.pdf"
-                  } ]
-                } ]
-              }
-            }
-          },
-          "401" : {
-            "$ref" : "#/components/responses/Unauthorized"
-          }
-        },
-        "security" : [ {
-          "todoAuth" : [ ]
-        } ]
-      },
       "put" : {
         "tags" : [ "Todo API" ],
         "summary" : "Atualiza a lista de afazeres na base de dados",
@@ -520,6 +439,9 @@
           },
           "401" : {
             "$ref" : "#/components/responses/Unauthorized"
+          },
+          "403" : {
+            "$ref" : "#/components/responses/Forbidden"
           },
           "404" : {
             "description" : "Lista de afazeres com o id informado não encontrada",
@@ -630,6 +552,9 @@
           },
           "401" : {
             "$ref" : "#/components/responses/Unauthorized"
+          },
+          "403" : {
+            "$ref" : "#/components/responses/Forbidden"
           }
         },
         "security" : [ {
@@ -729,6 +654,9 @@
           "401" : {
             "$ref" : "#/components/responses/Unauthorized"
           },
+          "403" : {
+            "$ref" : "#/components/responses/Forbidden"
+          },
           "404" : {
             "description" : "Usuário com o id informado não encontrado",
             "content" : {
@@ -771,6 +699,9 @@
           },
           "401" : {
             "$ref" : "#/components/responses/Unauthorized"
+          },
+          "403" : {
+            "$ref" : "#/components/responses/Forbidden"
           },
           "404" : {
             "description" : "Usuário não encontrado",
@@ -833,6 +764,9 @@
           "401" : {
             "$ref" : "#/components/responses/Unauthorized"
           },
+          "403" : {
+            "$ref" : "#/components/responses/Forbidden"
+          },
           "404" : {
             "description" : "Lista de afazeres com o id informado não encontrada",
             "content" : {
@@ -875,6 +809,9 @@
           },
           "401" : {
             "$ref" : "#/components/responses/Unauthorized"
+          },
+          "403" : {
+            "$ref" : "#/components/responses/Forbidden"
           },
           "404" : {
             "description" : "Lista de afazeres com o id informado não encontrada",
@@ -929,6 +866,9 @@
           "401" : {
             "$ref" : "#/components/responses/Unauthorized"
           },
+          "403" : {
+            "$ref" : "#/components/responses/Forbidden"
+          },
           "404" : {
             "description" : "Lista de afazeres com o id informado não encontrada",
             "content" : {
@@ -949,7 +889,7 @@
   "components" : {
     "responses" : {
       "Unauthorized" : {
-        "description" : "Usuário não autorizado",
+        "description" : "Usuário não autenticado",
         "content" : {
           "application/json" : {
             "schema" : {
@@ -960,6 +900,23 @@
               "status" : 401,
               "error" : "Unauthorized",
               "message" : "Invalid token",
+              "path" : "..."
+            }
+          }
+        }
+      },
+      "Forbidden" : {
+        "description" : "Usuário não possui permissão para acessar este recurso ou serviço",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/ApiError"
+            },
+            "example" : {
+              "timestamp" : "2021-01-11T21:12:27.253+00:00",
+              "status" : 403,
+              "error" : "Forbidden",
+              "message" : "",
               "path" : "..."
             }
           }
