@@ -5,10 +5,10 @@ stages:
   - test
   - package
   
- build:
-   stage: build
-   script:
-     - mvn compile
+build:
+  stage: build
+  script:
+    - mvn compile
      
 test:
   stage: test
