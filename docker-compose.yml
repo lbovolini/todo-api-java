@@ -1,21 +1,28 @@
 version: '3'
+
 services:
   mongo:
-    image: mongo:4.4.2
-    container_name: mongodb
+    image: mongo:latest
+    container_name: mongo
+    restart: always
     environment:
       - MONGO_INITDB_DATABASE=todo
     ports:
       - 27017:27017
-    command: --logpath=/dev/null
+    network_mode: host
+    healthcheck:
+      test: "exit 0"
   api:
-    #build:
-    #  dockerfile: Dockerfile
-    #  context: .
+    build: .
+    image: todo-api
+    depends_on:
+      - mongo
+    network_mode: "host"
+    hostname: localhost
+    restart: always
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/todo
-    image: todo-api-image
     ports:
       - 8080:8080
-    #depends_on:
-    #  - mongo
+    healthcheck:
+      test: "exit 0"
