@@ -1,7 +1,7 @@
 package com.gitlab.lbovolini.todo.authentication.repository;
 
-import com.gitlab.lbovolini.todo.common.DefaultUser;
 import com.gitlab.lbovolini.todo.common.exception.NotFoundException;
+import com.gitlab.lbovolini.todo.common.model.User;
 import com.mongodb.client.result.UpdateResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -23,11 +23,11 @@ public class AuthenticationRepositoryImpl implements AuthenticationRepository {
     }
 
     @Override
-    public Optional<DefaultUser> findByUsername(String username) {
+    public Optional<User> findByUsername(String username) {
         Query query = Query.query(Criteria.where("username").is(username));
-        DefaultUser defaultUser = mongoTemplate.findOne(query, DefaultUser.class, "user");
+        User user = mongoTemplate.findOne(query, User.class);
 
-        return Optional.ofNullable(defaultUser);
+        return Optional.ofNullable(user);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class AuthenticationRepositoryImpl implements AuthenticationRepository {
         Update update = new Update();
         update.set("accountNonLocked", false);
 
-        UpdateResult updateResult = mongoTemplate.updateFirst(query, update, "user");
+        UpdateResult updateResult = mongoTemplate.updateFirst(query, update, User.class);
 
         if (updateResult.getMatchedCount() < 1) {
             throw new NotFoundException("Username not found");
@@ -51,6 +51,6 @@ public class AuthenticationRepositoryImpl implements AuthenticationRepository {
         Update update = new Update();
         update.set("accountNonLocked", true);
 
-        mongoTemplate.updateFirst(query, update, "user");
+        mongoTemplate.updateFirst(query, update, User.class);
     }
 }

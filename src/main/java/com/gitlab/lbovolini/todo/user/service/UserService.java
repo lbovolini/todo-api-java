@@ -1,7 +1,7 @@
 package com.gitlab.lbovolini.todo.user.service;
 
 import com.gitlab.lbovolini.todo.common.CrudService;
-import com.gitlab.lbovolini.todo.user.model.User;
+import com.gitlab.lbovolini.todo.common.model.User;
 
 import java.util.Optional;
 

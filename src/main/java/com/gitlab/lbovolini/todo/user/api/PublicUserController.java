@@ -1,7 +1,7 @@
 package com.gitlab.lbovolini.todo.user.api;
 
 import com.gitlab.lbovolini.todo.user.service.UserService;
-import com.gitlab.lbovolini.todo.user.model.User;
+import com.gitlab.lbovolini.todo.common.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

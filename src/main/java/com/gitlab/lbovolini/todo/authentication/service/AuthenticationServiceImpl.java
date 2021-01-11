@@ -3,7 +3,7 @@ package com.gitlab.lbovolini.todo.authentication.service;
 import com.gitlab.lbovolini.todo.authentication.AuthenticatedUser;
 import com.gitlab.lbovolini.todo.authentication.UserCredentials;
 import com.gitlab.lbovolini.todo.authentication.repository.AuthenticationRepository;
-import com.gitlab.lbovolini.todo.common.DefaultUser;
+import com.gitlab.lbovolini.todo.common.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -35,13 +35,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public Optional<DefaultUser> findByUsername(String username) {
+    public Optional<User> findByUsername(String username) {
         return authenticationRepository.findByUsername(username);
     }
 
     @Override
     public AuthenticatedUser login(UserCredentials userCredentials) {
-        DefaultUser defaultUser = authenticate(userCredentials);
+        User defaultUser = authenticate(userCredentials);
         authenticationRepository.unlockAccount(defaultUser.getUsername());
         String token = generateToken(userCredentials.getUsername());
 
@@ -69,8 +69,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .getBody();
     }
 
-    private DefaultUser authenticate(UserCredentials userCredentials) {
-        Optional<DefaultUser> optionalUser = authenticationRepository.findByUsername(userCredentials.getUsername());
+    private User authenticate(UserCredentials userCredentials) {
+        Optional<User> optionalUser = authenticationRepository.findByUsername(userCredentials.getUsername());
 
         return optionalUser.stream()
                 .filter(user -> BCrypt.checkpw(userCredentials.getPassword(), user.getPassword()))

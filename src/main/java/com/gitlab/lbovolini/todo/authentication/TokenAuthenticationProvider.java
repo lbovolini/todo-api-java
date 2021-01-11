@@ -1,7 +1,7 @@
 package com.gitlab.lbovolini.todo.authentication;
 
 import com.gitlab.lbovolini.todo.authentication.service.AuthenticationService;
-import com.gitlab.lbovolini.todo.common.DefaultUser;
+import com.gitlab.lbovolini.todo.common.model.User;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -62,7 +62,7 @@ public class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticati
         return Optional.ofNullable(username)
                 .map(authenticationService::findByUsername)
                 .orElseThrow(() -> new AuthenticationServiceException("Cannot find username"))
-                .filter(DefaultUser::isAccountNonLocked)
+                .filter(User::isAccountNonLocked)
                 .orElseThrow(() -> new AuthenticationServiceException("User is locked, authenticate again to unlock"));
         //return new User(username, (String)authenticationToken.getCredentials(), authenticationToken.getAuthorities());
     }

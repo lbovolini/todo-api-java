@@ -1,6 +1,6 @@
 package com.gitlab.lbovolini.todo.user.service;
 
-import com.gitlab.lbovolini.todo.user.model.User;
+import com.gitlab.lbovolini.todo.common.model.User;
 import com.gitlab.lbovolini.todo.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
