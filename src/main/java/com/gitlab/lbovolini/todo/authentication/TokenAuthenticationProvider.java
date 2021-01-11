@@ -53,13 +53,18 @@ public class TokenAuthenticationProvider extends AbstractUserDetailsAuthenticati
 
 
         // !todo checar somente uma vez
-        return this.createSuccessAuthentication(username, authentication, retrieveUser(username, authenticationToken));
+        User user = retrieveUser(username);
+        return this.createSuccessAuthentication(user, authenticationToken, user);
     }
 
     @Override
     protected UserDetails retrieveUser(
             String username,
             UsernamePasswordAuthenticationToken authenticationToken) throws AuthenticationException {
+            return retrieveUser(username);
+    }
+
+    private User retrieveUser(String username) {
         return Optional.ofNullable(username)
                 .map(authenticationService::findByUsername)
                 .orElseThrow(() -> new AuthenticationServiceException("Cannot find username"))
