@@ -40,10 +40,10 @@ class TodoServiceImplUnitTest {
 
     @Test
     void shouldDeleteTodoById() {
-        doNothing().when(todoRepository).deleteById(id);
+        doNothing().when(todoRepository).delete(id);
         todoService.delete(id);
 
-        verify(todoRepository, times(1)).deleteById(id);
+        verify(todoRepository, times(1)).delete(id);
     }
 
     @Test

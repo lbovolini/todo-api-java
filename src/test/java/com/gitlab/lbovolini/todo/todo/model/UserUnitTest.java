@@ -1,6 +1,6 @@
 package com.gitlab.lbovolini.todo.todo.model;
 
-import com.gitlab.lbovolini.todo.user.model.User;
+import com.gitlab.lbovolini.todo.common.model.User;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

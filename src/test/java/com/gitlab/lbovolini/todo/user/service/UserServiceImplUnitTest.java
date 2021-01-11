@@ -1,8 +1,7 @@
 package com.gitlab.lbovolini.todo.user.service;
 
-import com.gitlab.lbovolini.todo.user.model.User;
+import com.gitlab.lbovolini.todo.common.model.User;
 import com.gitlab.lbovolini.todo.user.repository.UserRepository;
-import com.gitlab.lbovolini.todo.user.service.UserServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -36,10 +35,10 @@ class UserServiceImplUnitTest {
 
     @Test
     void shouldDeleteUserById() {
-        doNothing().when(userRepository).deleteById(id);
+        doNothing().when(userRepository).delete(id);
         userService.delete(id);
 
-        verify(userRepository, times(1)).deleteById(id);
+        verify(userRepository, times(1)).delete(id);
     }
 
     @Test

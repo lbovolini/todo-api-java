@@ -3,7 +3,7 @@ package com.gitlab.lbovolini.todo.authentication.service;
 import com.gitlab.lbovolini.todo.authentication.AuthenticatedUser;
 import com.gitlab.lbovolini.todo.authentication.UserCredentials;
 import com.gitlab.lbovolini.todo.authentication.repository.AuthenticationRepository;
-import com.gitlab.lbovolini.todo.common.DefaultUser;
+import com.gitlab.lbovolini.todo.common.model.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,12 +32,12 @@ class AuthenticationServiceImplUnitTest {
     private final String hashedPassword = "$2a$12$oapo8oMaxkPBzCnD.GKieOL3kjVed/umWYrSWGzvzdvUshedUFCX2";
     private final int minimumTokenSize = 8; // "Bearer " + token
 
-    private DefaultUser defaultUser = new DefaultUser(id, username, hashedPassword);
+    private User user = new User(id, username, hashedPassword);
     private final UserCredentials userCredentials = new UserCredentials(username, password);
 
     @Test
     void shouldAllowUserLoginWithCredentials() {
-        when(authenticationRepository.findByUsername(username)).thenReturn(Optional.of(defaultUser));
+        when(authenticationRepository.findByUsername(username)).thenReturn(Optional.of(user));
 
         AuthenticatedUser authenticatedUser = authenticationService.login(userCredentials);
 
@@ -60,7 +60,7 @@ class AuthenticationServiceImplUnitTest {
 
     @Test
     void shouldUnlockUserOnLogin() {
-        when(authenticationRepository.findByUsername(username)).thenReturn(Optional.of(defaultUser));
+        when(authenticationRepository.findByUsername(username)).thenReturn(Optional.of(user));
         doNothing().when(authenticationRepository).unlockAccount(username);
 
         AuthenticatedUser authenticatedUser = authenticationService.login(userCredentials);
