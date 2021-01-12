@@ -10,7 +10,7 @@ RUN mvn -Dmaven.repo.local=./.m2/repository dependency:go-offline
 
 RUN ls -la ${APP_FOLDER}
 RUN java --version
-RUN mvn -Dmaven.repo.local=./.m2/repository package -Dmaven.test.skip=true
+RUN mvn -Dmaven.repo.local=./.m2/repository -Dmaven.test.skip=true package -o
 
 # RUN
 FROM openjdk:11-jre-slim
