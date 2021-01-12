@@ -23,6 +23,7 @@ build:
      
 test:
   stage: test
+  image: mongo
   script:
     - mvn test
 
