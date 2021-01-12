@@ -3,11 +3,13 @@ default:
 
 variables:
   DOCKER_DRIVER: overlay2
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
 
 cache:
   key: global-cache
   paths:
     - target/
+    - .m2/repository
 
 stages:
   - build
