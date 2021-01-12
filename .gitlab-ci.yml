@@ -23,8 +23,6 @@ dockerize:
   image: docker:latest
   script:
     - apk update
-    - rc-update add docker boot
-    - service docker start
     - apk add docker-compose
     - docker login -u $DOCKER_USER -p $DOCKER_TOKEN registry.gitlab.com
     - docker-compose build
