@@ -6,6 +6,8 @@ variables:
 
 cache:
   key: global-cache
+  paths:
+    - target/
 
 stages:
   - build
