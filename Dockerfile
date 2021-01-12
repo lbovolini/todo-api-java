@@ -5,14 +5,12 @@ MAINTAINER Lucas Bovolini lbovolini94@gmail.com
 ENV APP_FOLDER=/todo
 
 WORKDIR ${APP_FOLDER}
-COPY pom.xml .
-RUN mvn dependency:go-offline
-
-COPY src/ src/.
+COPY . .
+RUN mvn -Dmaven.repo.local=./.m2/repository dependency:go-offline
 
 RUN ls -la ${APP_FOLDER}
 RUN java --version
-RUN mvn package -Dmaven.test.skip=true
+RUN mvn -Dmaven.repo.local=./.m2/repository package -Dmaven.test.skip=true
 
 # RUN
 FROM openjdk:11-jre-slim
