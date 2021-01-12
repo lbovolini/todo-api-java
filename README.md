@@ -11,6 +11,8 @@ API para criação de lista de afazeres (todo list)
 - Swagger UI
 - Mockito
 
+##### Endereço: http://ec2-52-67-246-130.sa-east-1.compute.amazonaws.com:8080/todo/
+
 ### Instruções
 
 Para executar a aplicação localmente, primeiramente faça o clone do repositório.
