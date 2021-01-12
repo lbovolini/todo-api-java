@@ -23,7 +23,8 @@ build:
      
 test:
   stage: test
-  image: mongo
+  services:
+    - mongo
   script:
     - mvn test
 
