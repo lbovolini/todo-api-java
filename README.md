@@ -1,7 +1,47 @@
-### Requerimentos
- - Maven
- - JDK 11
- - MongoDB
+### Descrição
+
+API para criação de lista de afazeres (todo list)
+
+- Maven
+- JDK 11
+- MongoDB
+- Spring Boot
+- JJWT
+- Amazon S3
+- Swagger UI
+- Mockito
+
+### Instruções
+
+Para executar a aplicação localmente, primeiramente faça o clone do repositório.
+
+```
+git clone https://gitlab.com/lbovolini/todo.git
+```
+
+Acesse o repositório:
+
+```bash
+cd todo
+```
+
+Execute o docker compose:
+
+```
+docker-compose up
+```
+
+A aplicação estará disponível localmente no seguinte endereço:
+
+http://localhost:8080/todo/
+
+Acesse a documentação para mais detalhes.
+
+### Documentação
+
+Utilize o seguinte link para acessar a documentação localmente:
+
+[Documentação](http://localhost:8080/todo/swagger-ui/index.html?url=http://localhost:8080/todo/resources/docs/1.0.0/swagger/todo-1.0.0-swagger.json)
 
 ### Instruções de Autenticação
 
@@ -66,3 +106,54 @@ curl --location --request GET 'http://localhost:8080/todo/api/v1/users/' \
 }'
 ```
 
+### Banco de dados
+
+##### Usuário (user)
+
+- Um usuário (user) deve possuir um identificador único (id), um nome de usuário único (username) e deve possuir uma senha (password) com no 
+  - O nome de usuário pode conter somente letras ou número, com no mínimo 3 e no máximo 20 caracteres. 
+    - Regex: ``` "^(\\w){3,20}\\b"```
+  - A senha deve possuir no mínimo 8 caracteres, com no mínimo 1 letra e 1 número. 
+    - Regex:  ```"^(?=.*[\\d])(?=.*[a-z])[\\w!@#$%^&*()-=+,.;:]{8,}$"```
+  
+- Campos:
+  - id
+  - username
+  - password
+  - authorities
+  - accountNonLocked
+  
+##### Lista de afazer (todo)
+
+- Uma lista de afazeres (todo) deve possuir um identificador único (id) e o id do usuário (userId) a quem pertence 
+- Uma lista de afazeres (todo) deve pertencer a um e somente um usuário
+- Uma lista de afazeres (todo) pode pussuir nenhuma (0) ou muitas (n) tarefas (tasks)
+- Uma lista de afazeres (todo) pode possuir nenhum (0) ou muitos (n) anexos (attachments)
+
+- Campos:
+  - id
+  - userId
+  - tasks
+  - attachments
+
+##### Tarefa (task)
+
+- Uma tarefa (task) deve possuir um nome (name), uma descrição (description) e uma data (date)
+
+- Campos:
+  - name
+  - description
+  - date
+
+##### Anexo (attachment)
+
+- Um anexo (attachment) deve possuir um caminho (path)
+- Um anexo (attachment) pode ser de qualquer tipo de extensão
+- Um anexo (attachment) deve possuir um tamanho inferior a ?
+
+- Campos:
+  - name
+  - path
+  - type
+  - extension
+  - size
