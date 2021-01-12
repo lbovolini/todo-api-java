@@ -15,9 +15,6 @@
     }
   },
   "servers" : [ {
-    "description" : "SwaggerHub API Auto Mocking",
-    "url" : "https://virtserver.swaggerhub.com/lbovolini/Todo/1.0.0"
-  }, {
     "description" : "localhost",
     "url" : "http://localhost:8080/todo"
   } ],
@@ -360,7 +357,154 @@
                   "date" : "2021-02-04T17:47:25.147613061+00:00"
                 } ]
               }
-            },
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Operação realizada com sucesso",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Todo"
+                },
+                "example" : {
+                  "id" : "5ff65c7440deeb6df754110f",
+                  "userId" : "5ff4a5f993002c22433de9e3",
+                  "tasks" : [ {
+                    "name" : "Teste",
+                    "description" : "Enviar teste",
+                    "date" : "2021-02-04T17:47:25.147613061+00:00"
+                  } ]
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Campo obrigatório não informado",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ApiError"
+                },
+                "example" : {
+                  "timestamp" : "2021-01-07T18:20:58.611211043+00:00",
+                  "status" : 400,
+                  "error" : "Bad Request",
+                  "message" : "Method Argument Not Valid",
+                  "path" : "/todo/api/v1/todos",
+                  "errors" : [ {
+                    "field" : "userId",
+                    "message" : "must not be blank",
+                    "value" : null
+                  } ]
+                }
+              }
+            }
+          },
+          "401" : {
+            "$ref" : "#/components/responses/Unauthorized"
+          },
+          "403" : {
+            "$ref" : "#/components/responses/Forbidden"
+          },
+          "404" : {
+            "description" : "Lista de afazeres com o id informado não encontrada",
+            "content" : {
+              "application/json" : {
+                "example" : { }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "todoAuth" : [ ]
+        } ]
+      },
+      "post" : {
+        "tags" : [ "Todo API" ],
+        "summary" : "Salva a lista de afazeres na base de dados",
+        "operationId" : "save_todo",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Todo"
+              },
+              "example" : {
+                "userId" : "5ff4a5f993002c22433de9e3",
+                "tasks" : [ {
+                  "name" : "Teste",
+                  "description" : "Enviar teste",
+                  "date" : "2021-02-04T17:47:25.147613061+00:00"
+                } ]
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Operação realizada com sucesso",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Todo"
+                },
+                "example" : {
+                  "id" : "5ff74515d74e4d7d1c709c2b",
+                  "userId" : "5ff4a5f993002c22433de9e3",
+                  "tasks" : [ {
+                    "name" : "Teste",
+                    "description" : "Enviar teste",
+                    "date" : "2021-02-04T17:47:25.147613061+00:00"
+                  } ]
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Campo obrigatório não informado",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ApiError"
+                },
+                "example" : {
+                  "timestamp" : "2021-01-07T18:13:26.211841762+00:00",
+                  "status" : 400,
+                  "error" : "Bad Request",
+                  "message" : "Method Argument Not Valid",
+                  "path" : "/todo/api/v1/todos",
+                  "errors" : [ {
+                    "field" : "userId",
+                    "message" : "must not be blank",
+                    "value" : null
+                  } ]
+                }
+              }
+            }
+          },
+          "401" : {
+            "$ref" : "#/components/responses/Unauthorized"
+          },
+          "403" : {
+            "$ref" : "#/components/responses/Forbidden"
+          }
+        },
+        "security" : [ {
+          "todoAuth" : [ ]
+        } ]
+      }
+    },
+    "/api/v1/todos/upload" : {
+      "put" : {
+        "tags" : [ "Todo API" ],
+        "summary" : "Atualiza a lista de afazeres na base de dados",
+        "operationId" : "update_upload",
+        "requestBody" : {
+          "content" : {
             "multipart/form-data" : {
               "schema" : {
                 "type" : "object",
@@ -459,22 +603,9 @@
       "post" : {
         "tags" : [ "Todo API" ],
         "summary" : "Salva a lista de afazeres na base de dados",
-        "operationId" : "save_todo",
+        "operationId" : "save_upload",
         "requestBody" : {
           "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/Todo"
-              },
-              "example" : {
-                "userId" : "5ff4a5f993002c22433de9e3",
-                "tasks" : [ {
-                  "name" : "Teste",
-                  "description" : "Enviar teste",
-                  "date" : "2021-02-04T17:47:25.147613061+00:00"
-                } ]
-              }
-            },
             "multipart/form-data" : {
               "schema" : {
                 "type" : "object",

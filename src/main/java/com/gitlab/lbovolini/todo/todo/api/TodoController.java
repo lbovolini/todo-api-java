@@ -79,7 +79,7 @@ public class TodoController implements CrudController<Todo> {
         return ResponseEntity.ok(savedTodo);
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Todo> save(@Valid @RequestPart Todo todo, @RequestParam(required = false) MultipartFile attachment) {
         Todo savedTodo = Objects.nonNull(attachment)
                 ? todoService.save(todo, attachment)
@@ -99,7 +99,7 @@ public class TodoController implements CrudController<Todo> {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Todo> update(@Valid @RequestPart Todo todo, @RequestParam(required = false) MultipartFile attachment) {
         Optional<Todo> todoOptional = Objects.nonNull(attachment)
                 ? todoService.update(todo, attachment)
