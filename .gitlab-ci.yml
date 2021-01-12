@@ -1,4 +1,7 @@
-image: maven:3-openjdk-11-slim
+default:
+  image: maven:3-openjdk-11-slim
+  variables:
+    DOCKER_DRIVER: overlay2
 
 stages:
   - build
@@ -15,14 +18,15 @@ test:
   script:
     - mvn test
 
-services:
-  - docker:dind
-
 dockerize:
   stage: dockerize
   image: docker:latest
+  services:
+    - docker:dind
   script:
-    - apk update
-    - apk add docker-compose
+    #- apk update
+    #- apk add docker-compose
     - docker login -u $DOCKER_USER -p $DOCKER_TOKEN registry.gitlab.com
-    - docker-compose build
+    #- docker-compose build
+    - docker build -t registry.gitlab.com/lbovolini/todo .
+    - docker push registry.gitlab.com/lbovolini/todo
