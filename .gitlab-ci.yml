@@ -16,10 +16,9 @@ test:
     - mvn test
     
 dockerize:
-  image: docker:latest
   stage: dockerize
+  image: docker:latest
   script:
-    - docker info
     - apk update
     - apk add docker-compose
     - docker-compose build
