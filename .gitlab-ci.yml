@@ -4,6 +4,7 @@ default:
 variables:
   DOCKER_DRIVER: overlay2
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+  SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/todo
 
 cache:
   key: global-cache
