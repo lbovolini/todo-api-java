@@ -4,7 +4,7 @@ services:
   mongo:
     image: mongo:latest
     container_name: mongo
-    restart: always
+    restart: unless-stopped
     environment:
       - MONGO_INITDB_DATABASE=todo
     ports:
@@ -20,7 +20,7 @@ services:
     depends_on:
       - mongo
     network_mode: "host"
-    hostname: localhost
+    hostname: unless-stopped
     restart: always
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/todo
