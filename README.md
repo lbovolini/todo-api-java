@@ -30,7 +30,9 @@ cd todo
 Execute o docker compose:
 
 ```
-docker-compose up
+export DOCKER_BUILDKIT=1  
+export COMPOSE_DOCKER_CLI_BUILD=1
+docker-compose up --build
 ```
 
 A aplicação estará disponível localmente no seguinte endereço:

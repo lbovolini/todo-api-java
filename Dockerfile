@@ -1,16 +1,12 @@
 # BUILD
-FROM maven:3-openjdk-11-slim as BUILD
+FROM maven:3.6.3-jdk-11-slim as BUILD
 MAINTAINER Lucas Bovolini lbovolini94@gmail.com
 
 ENV APP_FOLDER=/todo
 
 WORKDIR ${APP_FOLDER}
 COPY . .
-RUN mvn -Dmaven.repo.local=./.m2/repository dependency:go-offline
-
-RUN ls -la ${APP_FOLDER}
-RUN java --version
-RUN mvn -Dmaven.repo.local=./.m2/repository -Dmaven.test.skip=true package -o
+RUN --mount=type=cache,target=/root/.m2 mvn -Dmaven.test.skip=true clean package
 
 # RUN
 FROM openjdk:11-jre-slim

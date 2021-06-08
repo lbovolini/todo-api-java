@@ -1,30 +1,32 @@
 version: '3.8'
 
 services:
-  mongo:
+  todo_api:
+    build: .
+    image: todo-api
+    container_name: todo_api_container
+    depends_on:
+      - todo_mongo
+    restart: unless-stopped
+    environment:
+      - SPRING_DATA_MONGODB_DATABASE=todo
+      - SPRING_DATA_MONGODB_HOST=todo_mongo
+      - SPRING_DATA_MONGODB_URI=mongodb://todo_mongo:27017/todo
+    ports:
+      - 8080:8080
+    healthcheck:
+      test: "exit 0"
+
+  todo_mongo:
     image: mongo:latest
-    container_name: mongo
+    container_name: todo_mongo_container
     restart: unless-stopped
     environment:
       - MONGO_INITDB_DATABASE=todo
     ports:
       - 27017:27017
-    network_mode: host
     volumes:
-      - $HOME/mongo:/data/db
+      - ./db:/data/db:rw
     healthcheck:
       test: "exit 0"
-  api:
-    build: .
-    image: todo-api
-    depends_on:
-      - mongo
-    network_mode: "host"
-    hostname: unless-stopped
-    restart: always
-    environment:
-      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/todo
-    ports:
-      - 8080:8080
-    healthcheck:
-      test: "exit 0"
+

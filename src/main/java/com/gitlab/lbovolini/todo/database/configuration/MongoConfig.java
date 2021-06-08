@@ -3,6 +3,8 @@ package com.gitlab.lbovolini.todo.database.configuration;
 import com.gitlab.lbovolini.todo.database.converter.DateToZonedDateTimeReadConverter;
 import com.gitlab.lbovolini.todo.database.converter.ZonedDateTimeReadConverter;
 import com.gitlab.lbovolini.todo.database.converter.ZonedDateTimeWriteConverter;
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +17,9 @@ import java.util.List;
 
 @Configuration
 public class MongoConfig extends AbstractMongoClientConfiguration {
+
+    @Value("${spring.data.mongodb.host}")
+    private String host;
 
     private final String databaseName;
 
@@ -52,5 +57,10 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
     @Override
     protected boolean autoIndexCreation() {
         return true;
+    }
+
+    @Override
+    protected void configureClientSettings(MongoClientSettings.Builder builder) {
+        builder.applyConnectionString(new ConnectionString("mongodb://todo_mongo:27017/todo"));
     }
 }
