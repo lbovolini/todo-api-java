@@ -52,6 +52,11 @@ Execute o build com o docker compose:
 ./build.sh
 ```
 
+Inicie os containers:
+```
+docker-compose up
+```
+
 A aplicação estará disponível localmente no seguinte endereço:
 
 http://localhost:8080/todo/
