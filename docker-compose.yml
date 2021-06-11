@@ -21,6 +21,7 @@ services:
   todo_mongo:
     image: mongo:latest
     container_name: todo_mongo_container
+    user: "${USER_ID}:1024"
     restart: unless-stopped
     environment:
       - MONGO_INITDB_DATABASE=todo
