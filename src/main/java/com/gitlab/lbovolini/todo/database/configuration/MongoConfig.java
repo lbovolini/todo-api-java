@@ -18,8 +18,8 @@ import java.util.List;
 @Configuration
 public class MongoConfig extends AbstractMongoClientConfiguration {
 
-    @Value("${spring.data.mongodb.host}")
-    private String host;
+    @Value("${spring.data.mongodb.uri}")
+    private String uri;
 
     private final String databaseName;
 
@@ -61,6 +61,6 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Override
     protected void configureClientSettings(MongoClientSettings.Builder builder) {
-        builder.applyConnectionString(new ConnectionString("mongodb://todo_mongo:27017/todo"));
+        builder.applyConnectionString(new ConnectionString(uri));
     }
 }
