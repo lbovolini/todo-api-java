@@ -2,6 +2,12 @@
 FROM maven:3.6.3-jdk-11-slim as BUILD
 MAINTAINER Lucas Bovolini lbovolini94@gmail.com
 
+ARG USER_ID
+ARG GROUP_ID
+
+RUN addgroup --gid $GROUP_ID user
+RUN adduser --disabled-password --gecos '' --uid $USER_ID --gid $GROUP_ID user
+
 ENV APP_FOLDER=/todo
 
 WORKDIR ${APP_FOLDER}
@@ -13,6 +19,12 @@ FROM openjdk:11-jre-slim
 MAINTAINER Lucas Bovolini lbovolini94@gmail.com
 ENV APP_NAME=todo-list
 ENV APP_FOLDER=/todo
+
+ARG USER_ID
+ARG GROUP_ID
+
+RUN addgroup --gid $GROUP_ID user
+RUN adduser --disabled-password --gecos '' --uid $USER_ID --gid $GROUP_ID user
 
 WORKDIR ${APP_FOLDER}
 COPY --from=BUILD ".${APP_FOLDER}/target/${APP_NAME}*.jar" ${APP_FOLDER}/${APP_NAME}.jar
