@@ -39,22 +39,22 @@ export S3_ACCESS_KEY_ID=...
 export S3_SECRET_ACCESS_KEY=...
 ```
 
-Habilite o Docker BuildKit:
-
-```
-export DOCKER_BUILDKIT=1  
-export COMPOSE_DOCKER_CLI_BUILD=1
-```
-
 Execute o build com o docker compose:
 
 ```
-./build.sh
+sh build.sh
 ```
 
 Inicie os containers:
+
 ```
-docker-compose up
+sh run.sh
+```
+
+Para parar os containers:
+
+```bash
+docker-compose down
 ```
 
 A aplicação estará disponível localmente no seguinte endereço:
