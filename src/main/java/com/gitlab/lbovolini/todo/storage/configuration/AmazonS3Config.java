@@ -14,8 +14,8 @@ public class AmazonS3Config {
 
     // !todo usar ENV var
     private final AWSCredentials credentials = new BasicAWSCredentials(
-            "AKIA6BD4DRY3M5CJECEV",
-            "RpZciV8CqRNrfFh7t0jZUeTgFeCaFJU3avjZ5toW"
+            System.getenv("S3_ACCESS_KEY_ID"),
+            System.getenv("S3_SECRET_ACCESS_KEY")
     );
 
     @Bean
