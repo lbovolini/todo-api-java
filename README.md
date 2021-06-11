@@ -6,10 +6,15 @@ API para criação de lista de afazeres (todo list)
 - JDK 11
 - MongoDB
 - Spring Boot
+- Spring Validation
+- Spring Security
+- Spring Data
 - JJWT
 - Amazon S3
 - Swagger UI
 - Mockito
+- JUnit 5
+- Docker
 
 ##### Endereço: http://ec2-52-67-246-130.sa-east-1.compute.amazonaws.com:8080/todo/
 
@@ -27,12 +32,24 @@ Acesse o repositório:
 cd todo
 ```
 
-Execute o docker compose:
+Informe as credenciais de acesso ao serviço de armazenamento da Amazon S3:
+
+```
+export S3_ACCESS_KEY_ID=...
+export S3_SECRET_ACCESS_KEY=...
+```
+
+Habilite o Docker BuildKit:
 
 ```
 export DOCKER_BUILDKIT=1  
 export COMPOSE_DOCKER_CLI_BUILD=1
-docker-compose up --build
+```
+
+Execute o build com o docker compose:
+
+```
+./build.sh
 ```
 
 A aplicação estará disponível localmente no seguinte endereço:
